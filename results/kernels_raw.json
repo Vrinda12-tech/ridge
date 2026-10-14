@@ -1,0 +1,16 @@
+{
+  "cpu_avx512": 1,
+  "roof_read_gbs": 33.261,
+  "roof_copy_gbs": 20.639,
+  "roof_fma_gflops": 109.0,
+  "ridge_flop_per_byte": 3.278,
+  "disk_direct_gbs": 0.177,
+  "disk_buffered_gbs": 11.659,
+  "ternary_gflops": 17.95,
+  "ternary_packed_gbs": 2.244,
+  "ternary_ridge_flop_per_byte": 8.0,
+  "ternary_max_abs_err": 1.549e-05,
+  "linear_state_bytes_per_token": 17915904,
+  "kv_bytes_per_token": 248832,
+  "kv_bytes_at_ctx8192": 2038431744
+}

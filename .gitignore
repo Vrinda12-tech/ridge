@@ -1,0 +1,13 @@
+# build artifacts
+bench/architect_kernels
+*.o
+*.so
+build/
+dist/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+
+# probe scratch
+.architect_io_probe.bin
+_recon/

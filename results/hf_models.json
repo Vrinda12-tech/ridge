@@ -1,0 +1,460 @@
+[
+  {
+    "repo": "Qwen/Qwen2.5-Coder-7B-Instruct",
+    "downloads": 1589786,
+    "likes": 830,
+    "gated": false,
+    "license": "apache-2.0",
+    "config": {
+      "model_type": "qwen2",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "num_hidden_layers": 28,
+      "hidden_size": 3584,
+      "num_attention_heads": 28,
+      "intermediate_size": 18944,
+      "vocab_size": 152064,
+      "max_position_embeddings": 32768,
+      "num_key_value_heads": 4,
+      "hidden_act": "silu",
+      "torch_dtype": "bfloat16"
+    },
+    "weight_files": [
+      {
+        "path": "model-00001-of-00004.safetensors",
+        "size_gb": 4.878
+      },
+      {
+        "path": "model-00002-of-00004.safetensors",
+        "size_gb": 4.933
+      },
+      {
+        "path": "model-00003-of-00004.safetensors",
+        "size_gb": 4.331
+      },
+      {
+        "path": "model-00004-of-00004.safetensors",
+        "size_gb": 1.09
+      }
+    ],
+    "total_weight_gb": 15.232
+  },
+  {
+    "repo": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+    "downloads": 463869,
+    "likes": 158,
+    "gated": false,
+    "license": "apache-2.0",
+    "config": {
+      "model_type": "qwen2",
+      "architectures": [
+        "Qwen2ForCausalLM"
+      ],
+      "num_hidden_layers": 28,
+      "hidden_size": 1536,
+      "num_attention_heads": 12,
+      "intermediate_size": 8960,
+      "vocab_size": 151936,
+      "max_position_embeddings": 32768,
+      "num_key_value_heads": 2,
+      "hidden_act": "silu",
+      "torch_dtype": "bfloat16"
+    },
+    "weight_files": [
+      {
+        "path": "model.safetensors",
+        "size_gb": 3.087
+      }
+    ],
+    "total_weight_gb": 3.087
+  },
+  {
+    "repo": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "downloads": 1131294,
+    "likes": 1859,
+    "gated": false,
+    "license": "apache-2.0",
+    "config": {
+      "model_type": "llama",
+      "architectures": [
+        "LlamaForCausalLM"
+      ],
+      "num_hidden_layers": 22,
+      "hidden_size": 2048,
+      "num_attention_heads": 32,
+      "intermediate_size": 5632,
+      "vocab_size": 32000,
+      "max_position_embeddings": 2048,
+      "num_key_value_heads": 4,
+      "hidden_act": "silu",
+      "torch_dtype": "bfloat16"
+    },
+    "weight_files": [
+      {
+        "path": "model.safetensors",
+        "size_gb": 2.2
+      }
+    ],
+    "total_weight_gb": 2.2
+  },
+  {
+    "repo": "Qwen/Qwen3-32B",
+    "downloads": 3235453,
+    "likes": 768,
+    "gated": false,
+    "license": "apache-2.0",
+    "config": {
+      "model_type": "qwen3",
+      "architectures": [
+        "Qwen3ForCausalLM"
+      ],
+      "num_hidden_layers": 64,
+      "hidden_size": 5120,
+      "num_attention_heads": 64,
+      "intermediate_size": 25600,
+      "vocab_size": 151936,
+      "max_position_embeddings": 40960,
+      "num_key_value_heads": 8,
+      "head_dim": 128,
+      "hidden_act": "silu",
+      "torch_dtype": "bfloat16"
+    },
+    "weight_files": [
+      {
+        "path": "model-00001-of-00017.safetensors",
+        "size_gb": 3.957
+      },
+      {
+        "path": "model-00002-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00003-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00004-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00005-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00006-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00007-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00008-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00009-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00010-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00011-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00012-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00013-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00014-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00015-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00016-of-00017.safetensors",
+        "size_gb": 3.901
+      },
+      {
+        "path": "model-00017-of-00017.safetensors",
+        "size_gb": 3.055
+      }
+    ],
+    "total_weight_gb": 65.527
+  },
+  {
+    "repo": "deepseek-ai/deepseek-coder-33b-instruct",
+    "downloads": 2836,
+    "likes": 603,
+    "gated": false,
+    "license": "other",
+    "config": {
+      "model_type": "llama",
+      "architectures": [
+        "LlamaForCausalLM"
+      ],
+      "num_hidden_layers": 62,
+      "hidden_size": 7168,
+      "num_attention_heads": 56,
+      "intermediate_size": 19200,
+      "vocab_size": 32256,
+      "max_position_embeddings": 16384,
+      "num_key_value_heads": 8,
+      "hidden_act": "silu",
+      "torch_dtype": "bfloat16"
+    },
+    "weight_files": [
+      {
+        "path": "model-00001-of-00007.safetensors",
+        "size_gb": 9.733
+      },
+      {
+        "path": "model-00002-of-00007.safetensors",
+        "size_gb": 9.953
+      },
+      {
+        "path": "model-00003-of-00007.safetensors",
+        "size_gb": 9.924
+      },
+      {
+        "path": "model-00004-of-00007.safetensors",
+        "size_gb": 9.821
+      },
+      {
+        "path": "model-00005-of-00007.safetensors",
+        "size_gb": 9.953
+      },
+      {
+        "path": "model-00006-of-00007.safetensors",
+        "size_gb": 9.924
+      },
+      {
+        "path": "model-00007-of-00007.safetensors",
+        "size_gb": 7.377
+      },
+      {
+        "path": "pytorch_model-00001-of-00007.bin",
+        "size_gb": 9.733
+      },
+      {
+        "path": "pytorch_model-00002-of-00007.bin",
+        "size_gb": 9.953
+      },
+      {
+        "path": "pytorch_model-00003-of-00007.bin",
+        "size_gb": 9.924
+      },
+      {
+        "path": "pytorch_model-00004-of-00007.bin",
+        "size_gb": 9.821
+      },
+      {
+        "path": "pytorch_model-00005-of-00007.bin",
+        "size_gb": 9.953
+      },
+      {
+        "path": "pytorch_model-00006-of-00007.bin",
+        "size_gb": 9.924
+      },
+      {
+        "path": "pytorch_model-00007-of-00007.bin",
+        "size_gb": 7.377
+      }
+    ],
+    "total_weight_gb": 133.37
+  },
+  {
+    "repo": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+    "downloads": 202954,
+    "likes": 609,
+    "gated": false,
+    "license": "mit",
+    "config": {
+      "model_type": "kimi_linear",
+      "architectures": [
+        "KimiLinearForCausalLM"
+      ],
+      "num_hidden_layers": 27,
+      "hidden_size": 2304,
+      "num_attention_heads": 32,
+      "intermediate_size": 9216,
+      "vocab_size": 163840,
+      "num_key_value_heads": 32,
+      "moe_intermediate_size": 1024,
+      "num_experts": 256,
+      "head_dim": 72,
+      "hidden_act": "silu"
+    },
+    "weight_files": [
+      {
+        "path": "model-00001-of-00020.safetensors",
+        "size_gb": 4.999
+      },
+      {
+        "path": "model-00002-of-00020.safetensors",
+        "size_gb": 5.0
+      },
+      {
+        "path": "model-00003-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00004-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00005-of-00020.safetensors",
+        "size_gb": 5.0
+      },
+      {
+        "path": "model-00006-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00007-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00008-of-00020.safetensors",
+        "size_gb": 5.0
+      },
+      {
+        "path": "model-00009-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00010-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00011-of-00020.safetensors",
+        "size_gb": 5.0
+      },
+      {
+        "path": "model-00012-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00013-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00014-of-00020.safetensors",
+        "size_gb": 5.0
+      },
+      {
+        "path": "model-00015-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00016-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00017-of-00020.safetensors",
+        "size_gb": 5.0
+      },
+      {
+        "path": "model-00018-of-00020.safetensors",
+        "size_gb": 4.997
+      },
+      {
+        "path": "model-00019-of-00020.safetensors",
+        "size_gb": 5.0
+      },
+      {
+        "path": "model-00020-of-00020.safetensors",
+        "size_gb": 3.281
+      }
+    ],
+    "total_weight_gb": 98.247
+  },
+  {
+    "repo": "microsoft/bitnet-b1.58-2B-4T",
+    "downloads": 18677,
+    "likes": 1503,
+    "gated": false,
+    "license": "mit",
+    "config": {
+      "model_type": "bitnet",
+      "architectures": [
+        "BitNetForCausalLM"
+      ],
+      "num_hidden_layers": 30,
+      "hidden_size": 2560,
+      "num_attention_heads": 20,
+      "intermediate_size": 6912,
+      "vocab_size": 128256,
+      "max_position_embeddings": 4096,
+      "num_key_value_heads": 5,
+      "hidden_act": "relu2",
+      "torch_dtype": "bfloat16",
+      "quantization_config": {
+        "quant_method": "bitnet",
+        "bits": null,
+        "group_size": null,
+        "modules_to_not_convert": null
+      }
+    },
+    "weight_files": [
+      {
+        "path": "model.safetensors",
+        "size_gb": 1.179
+      }
+    ],
+    "total_weight_gb": 1.179
+  },
+  {
+    "repo": "BlinkDL/rwkv7-g1",
+    "downloads": 34450,
+    "likes": 234,
+    "gated": false,
+    "license": "apache-2.0",
+    "config_error": "HTTP Error 404: Not Found",
+    "weight_files": [
+      {
+        "path": "rwkv7-g1d-0.1b-20260129-ctx8192.pth",
+        "size_gb": 0.382
+      },
+      {
+        "path": "rwkv7-g1d-0.4b-20260210-ctx8192.pth",
+        "size_gb": 0.902
+      },
+      {
+        "path": "rwkv7-g1k-1.5b-20260930-ctx25600.pth",
+        "size_gb": 3.055
+      },
+      {
+        "path": "rwkv7-g1k-13.3b-20260930-ctx25600.pth",
+        "size_gb": 26.541
+      },
+      {
+        "path": "rwkv7-g1k-2.9b-20260930-ctx25600.pth",
+        "size_gb": 5.896
+      },
+      {
+        "path": "rwkv7-g1k-7.2b-20260930-ctx25600.pth",
+        "size_gb": 14.4
+      },
+      {
+        "path": "rwkv7a-g1d-0.1b-20260212-ctx8192.pth",
+        "size_gb": 2.015
+      },
+      {
+        "path": "rwkv7b-g1b-0.1b-20250822-ctx4096.pth",
+        "size_gb": 3.651
+      }
+    ],
+    "total_weight_gb": 56.842
+  }
+]

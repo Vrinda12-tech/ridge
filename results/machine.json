@@ -1,0 +1,1115 @@
+{
+  "generated_by": "bench/run.py",
+  "host": {
+    "platform": "Linux-6.8.0-1055-gke-x86_64-with-glibc2.41",
+    "processor": "",
+    "python": "3.13.15",
+    "cpu_count": 4
+  },
+  "kernel": {
+    "cpu_avx512": 1,
+    "roof_read_gbs": 33.261,
+    "roof_copy_gbs": 20.639,
+    "roof_fma_gflops": 109.0,
+    "ridge_flop_per_byte": 3.278,
+    "disk_direct_gbs": 0.177,
+    "disk_buffered_gbs": 11.659,
+    "ternary_gflops": 17.95,
+    "ternary_packed_gbs": 2.244,
+    "ternary_ridge_flop_per_byte": 8.0,
+    "ternary_max_abs_err": 1.549e-05,
+    "linear_state_bytes_per_token": 17915904,
+    "kv_bytes_per_token": 248832,
+    "kv_bytes_at_ctx8192": 2038431744
+  },
+  "machine": {
+    "read_gbs": 33.261,
+    "copy_gbs": 20.639,
+    "fma_gflops": 109.0,
+    "disk_direct_gbs": 0.177,
+    "disk_buffered_gbs": 11.659,
+    "ridge_flop_per_byte": 3.277,
+    "ram_budget_gb": 8.0
+  },
+  "hub_models": [
+    {
+      "repo": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "total_weight_gb": 15.232,
+      "config": {
+        "model_type": "qwen2",
+        "architectures": [
+          "Qwen2ForCausalLM"
+        ],
+        "num_hidden_layers": 28,
+        "hidden_size": 3584,
+        "num_attention_heads": 28,
+        "intermediate_size": 18944,
+        "vocab_size": 152064,
+        "max_position_embeddings": 32768,
+        "num_key_value_heads": 4,
+        "hidden_act": "silu",
+        "torch_dtype": "bfloat16"
+      },
+      "license": "apache-2.0",
+      "downloads": 1589786
+    },
+    {
+      "repo": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+      "total_weight_gb": 3.087,
+      "config": {
+        "model_type": "qwen2",
+        "architectures": [
+          "Qwen2ForCausalLM"
+        ],
+        "num_hidden_layers": 28,
+        "hidden_size": 1536,
+        "num_attention_heads": 12,
+        "intermediate_size": 8960,
+        "vocab_size": 151936,
+        "max_position_embeddings": 32768,
+        "num_key_value_heads": 2,
+        "hidden_act": "silu",
+        "torch_dtype": "bfloat16"
+      },
+      "license": "apache-2.0",
+      "downloads": 463869
+    },
+    {
+      "repo": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "total_weight_gb": 2.2,
+      "config": {
+        "model_type": "llama",
+        "architectures": [
+          "LlamaForCausalLM"
+        ],
+        "num_hidden_layers": 22,
+        "hidden_size": 2048,
+        "num_attention_heads": 32,
+        "intermediate_size": 5632,
+        "vocab_size": 32000,
+        "max_position_embeddings": 2048,
+        "num_key_value_heads": 4,
+        "hidden_act": "silu",
+        "torch_dtype": "bfloat16"
+      },
+      "license": "apache-2.0",
+      "downloads": 1131294
+    },
+    {
+      "repo": "Qwen/Qwen3-32B",
+      "total_weight_gb": 65.527,
+      "config": {
+        "model_type": "qwen3",
+        "architectures": [
+          "Qwen3ForCausalLM"
+        ],
+        "num_hidden_layers": 64,
+        "hidden_size": 5120,
+        "num_attention_heads": 64,
+        "intermediate_size": 25600,
+        "vocab_size": 151936,
+        "max_position_embeddings": 40960,
+        "num_key_value_heads": 8,
+        "head_dim": 128,
+        "hidden_act": "silu",
+        "torch_dtype": "bfloat16"
+      },
+      "license": "apache-2.0",
+      "downloads": 3235453
+    },
+    {
+      "repo": "deepseek-ai/deepseek-coder-33b-instruct",
+      "total_weight_gb": 133.37,
+      "config": {
+        "model_type": "llama",
+        "architectures": [
+          "LlamaForCausalLM"
+        ],
+        "num_hidden_layers": 62,
+        "hidden_size": 7168,
+        "num_attention_heads": 56,
+        "intermediate_size": 19200,
+        "vocab_size": 32256,
+        "max_position_embeddings": 16384,
+        "num_key_value_heads": 8,
+        "hidden_act": "silu",
+        "torch_dtype": "bfloat16"
+      },
+      "license": "other",
+      "downloads": 2836
+    },
+    {
+      "repo": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+      "total_weight_gb": 98.247,
+      "config": {
+        "model_type": "kimi_linear",
+        "architectures": [
+          "KimiLinearForCausalLM"
+        ],
+        "num_hidden_layers": 27,
+        "hidden_size": 2304,
+        "num_attention_heads": 32,
+        "intermediate_size": 9216,
+        "vocab_size": 163840,
+        "num_key_value_heads": 32,
+        "moe_intermediate_size": 1024,
+        "num_experts": 256,
+        "head_dim": 72,
+        "hidden_act": "silu"
+      },
+      "license": "mit",
+      "downloads": 202954
+    },
+    {
+      "repo": "microsoft/bitnet-b1.58-2B-4T",
+      "total_weight_gb": 1.179,
+      "config": {
+        "model_type": "bitnet",
+        "architectures": [
+          "BitNetForCausalLM"
+        ],
+        "num_hidden_layers": 30,
+        "hidden_size": 2560,
+        "num_attention_heads": 20,
+        "intermediate_size": 6912,
+        "vocab_size": 128256,
+        "max_position_embeddings": 4096,
+        "num_key_value_heads": 5,
+        "hidden_act": "relu2",
+        "torch_dtype": "bfloat16",
+        "quantization_config": {
+          "quant_method": "bitnet",
+          "bits": null,
+          "group_size": null,
+          "modules_to_not_convert": null
+        }
+      },
+      "license": "mit",
+      "downloads": 18677
+    },
+    {
+      "repo": "BlinkDL/rwkv7-g1",
+      "total_weight_gb": 56.842,
+      "config": null,
+      "license": "apache-2.0",
+      "downloads": 34450
+    }
+  ],
+  "specs": {
+    "qwen2.5-coder-7b": {
+      "name": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "n_layer": 28,
+      "d_model": 3584,
+      "n_head": 28,
+      "d_head": 128,
+      "d_ff": 18944,
+      "vocab": 152064,
+      "n_kv_head": 4,
+      "n_experts": 0,
+      "n_experts_active": 0,
+      "attention": "full",
+      "tie_embeddings": false,
+      "params_total_b": 7.615,
+      "params_active_b": 7.615,
+      "kv_bytes_8k": 469762048.0
+    },
+    "qwen2.5-coder-1.5b": {
+      "name": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+      "n_layer": 28,
+      "d_model": 1536,
+      "n_head": 12,
+      "d_head": 128,
+      "d_ff": 8960,
+      "vocab": 151936,
+      "n_kv_head": 2,
+      "n_experts": 0,
+      "n_experts_active": 0,
+      "attention": "full",
+      "tie_embeddings": false,
+      "params_total_b": 1.777,
+      "params_active_b": 1.777,
+      "kv_bytes_8k": 234881024.0
+    },
+    "tinyllama-1.1b": {
+      "name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "n_layer": 22,
+      "d_model": 2048,
+      "n_head": 32,
+      "d_head": 64,
+      "d_ff": 5632,
+      "vocab": 32000,
+      "n_kv_head": 4,
+      "n_experts": 0,
+      "n_experts_active": 0,
+      "attention": "full",
+      "tie_embeddings": false,
+      "params_total_b": 1.1,
+      "params_active_b": 1.1,
+      "kv_bytes_8k": 184549376.0
+    },
+    "deepseek-coder-33b": {
+      "name": "deepseek-ai/deepseek-coder-33b-instruct",
+      "n_layer": 62,
+      "d_model": 7168,
+      "n_head": 56,
+      "d_head": 128,
+      "d_ff": 19200,
+      "vocab": 32256,
+      "n_kv_head": 8,
+      "n_experts": 0,
+      "n_experts_active": 0,
+      "attention": "full",
+      "tie_embeddings": false,
+      "params_total_b": 33.343,
+      "params_active_b": 33.343,
+      "kv_bytes_8k": 2080374784.0
+    },
+    "kimi-linear-48b-a3b": {
+      "name": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+      "n_layer": 27,
+      "d_model": 2304,
+      "n_head": 32,
+      "d_head": 72,
+      "d_ff": 1024,
+      "vocab": 163840,
+      "n_kv_head": 0,
+      "n_experts": 256,
+      "n_experts_active": 8,
+      "attention": "linear",
+      "tie_embeddings": false,
+      "params_total_b": 50.537,
+      "params_active_b": 3.144,
+      "kv_bytes_8k": 17915904.0
+    },
+    "qwen3-32b": {
+      "name": "Qwen/Qwen3-32B",
+      "n_layer": 64,
+      "d_model": 5120,
+      "n_head": 64,
+      "d_head": 128,
+      "d_ff": 25600,
+      "vocab": 151936,
+      "n_kv_head": 8,
+      "n_experts": 0,
+      "n_experts_active": 0,
+      "attention": "full",
+      "tie_embeddings": false,
+      "params_total_b": 32.762,
+      "params_active_b": 32.762,
+      "kv_bytes_8k": 2147483648.0
+    },
+    "bitnet-b1.58-2b": {
+      "name": "microsoft/bitnet-b1.58-2B-4T",
+      "n_layer": 30,
+      "d_model": 2560,
+      "n_head": 20,
+      "d_head": 128,
+      "d_ff": 6912,
+      "vocab": 128256,
+      "n_kv_head": 5,
+      "n_experts": 0,
+      "n_experts_active": 0,
+      "attention": "full",
+      "tie_embeddings": false,
+      "params_total_b": 2.741,
+      "params_active_b": 2.741,
+      "kv_bytes_8k": 629145600.0
+    },
+    "ternary-bonsai-27b": {
+      "name": "prism-ml/Ternary-Bonsai-2-27B",
+      "n_layer": 64,
+      "d_model": 5120,
+      "n_head": 40,
+      "d_head": 128,
+      "d_ff": 13824,
+      "vocab": 152064,
+      "n_kv_head": 8,
+      "n_experts": 0,
+      "n_experts_active": 0,
+      "attention": "full",
+      "tie_embeddings": false,
+      "params_total_b": 19.174,
+      "params_active_b": 19.174,
+      "kv_bytes_8k": 2147483648.0
+    },
+    "rwkv7-1.5b": {
+      "name": "BlinkDL/rwkv7-g1k-1.5b",
+      "n_layer": 24,
+      "d_model": 2048,
+      "n_head": 32,
+      "d_head": 64,
+      "d_ff": 8192,
+      "vocab": 65536,
+      "n_kv_head": 0,
+      "n_experts": 0,
+      "n_experts_active": 0,
+      "attention": "recurrent",
+      "tie_embeddings": false,
+      "params_total_b": 1.678,
+      "params_active_b": 1.678,
+      "kv_bytes_8k": 12582912.0
+    }
+  },
+  "throughput": [
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "dtype": "fp16",
+      "attention": "full",
+      "weight_gb": 15.231,
+      "kv_total_gb": 0.235,
+      "flops_per_token_gflop": 15.231,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 0.457924,
+      "tokens_per_s": 2.184,
+      "streamed_from_ssd_tokens_per_s": 0.011621,
+      "key": "qwen2.5-coder-7b"
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "dtype": "q4",
+      "attention": "full",
+      "weight_gb": 3.808,
+      "kv_total_gb": 0.235,
+      "flops_per_token_gflop": 15.231,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 0.848522,
+      "tokens_per_s": 1.179,
+      "streamed_from_ssd_tokens_per_s": 0.046484,
+      "key": "qwen2.5-coder-7b"
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "dtype": "q2",
+      "attention": "full",
+      "weight_gb": 1.904,
+      "kv_total_gb": 0.235,
+      "flops_per_token_gflop": 15.231,
+      "intensity_flop_per_byte": 8.0,
+      "bound": "compute",
+      "s_per_token": 0.848522,
+      "tokens_per_s": 1.179,
+      "streamed_from_ssd_tokens_per_s": 0.092968,
+      "key": "qwen2.5-coder-7b"
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+      "dtype": "fp16",
+      "attention": "full",
+      "weight_gb": 3.554,
+      "kv_total_gb": 0.117,
+      "flops_per_token_gflop": 3.554,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 0.106854,
+      "tokens_per_s": 9.359,
+      "streamed_from_ssd_tokens_per_s": 0.049802,
+      "key": "qwen2.5-coder-1.5b"
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+      "dtype": "q4",
+      "attention": "full",
+      "weight_gb": 0.889,
+      "kv_total_gb": 0.117,
+      "flops_per_token_gflop": 3.554,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 0.197998,
+      "tokens_per_s": 5.051,
+      "streamed_from_ssd_tokens_per_s": 0.199209,
+      "key": "qwen2.5-coder-1.5b"
+    },
+    {
+      "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+      "dtype": "q2",
+      "attention": "full",
+      "weight_gb": 0.444,
+      "kv_total_gb": 0.117,
+      "flops_per_token_gflop": 3.554,
+      "intensity_flop_per_byte": 7.999,
+      "bound": "compute",
+      "s_per_token": 0.197998,
+      "tokens_per_s": 5.051,
+      "streamed_from_ssd_tokens_per_s": 0.398418,
+      "key": "qwen2.5-coder-1.5b"
+    },
+    {
+      "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "dtype": "fp16",
+      "attention": "full",
+      "weight_gb": 2.2,
+      "kv_total_gb": 0.092,
+      "flops_per_token_gflop": 2.2,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 0.066147,
+      "tokens_per_s": 15.118,
+      "streamed_from_ssd_tokens_per_s": 0.080451,
+      "key": "tinyllama-1.1b"
+    },
+    {
+      "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "dtype": "q4",
+      "attention": "full",
+      "weight_gb": 0.55,
+      "kv_total_gb": 0.092,
+      "flops_per_token_gflop": 2.2,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 0.122568,
+      "tokens_per_s": 8.159,
+      "streamed_from_ssd_tokens_per_s": 0.321805,
+      "key": "tinyllama-1.1b"
+    },
+    {
+      "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "dtype": "q2",
+      "attention": "full",
+      "weight_gb": 0.275,
+      "kv_total_gb": 0.092,
+      "flops_per_token_gflop": 2.2,
+      "intensity_flop_per_byte": 7.999,
+      "bound": "compute",
+      "s_per_token": 0.122568,
+      "tokens_per_s": 8.159,
+      "streamed_from_ssd_tokens_per_s": 0.643609,
+      "key": "tinyllama-1.1b"
+    },
+    {
+      "model": "deepseek-ai/deepseek-coder-33b-instruct",
+      "dtype": "fp16",
+      "attention": "full",
+      "weight_gb": 66.686,
+      "kv_total_gb": 1.04,
+      "flops_per_token_gflop": 66.686,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 2.004937,
+      "tokens_per_s": 0.499,
+      "streamed_from_ssd_tokens_per_s": 0.002654,
+      "key": "deepseek-coder-33b"
+    },
+    {
+      "model": "deepseek-ai/deepseek-coder-33b-instruct",
+      "dtype": "q4",
+      "attention": "full",
+      "weight_gb": 16.671,
+      "kv_total_gb": 1.04,
+      "flops_per_token_gflop": 66.686,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 3.715096,
+      "tokens_per_s": 0.269,
+      "streamed_from_ssd_tokens_per_s": 0.010617,
+      "key": "deepseek-coder-33b"
+    },
+    {
+      "model": "deepseek-ai/deepseek-coder-33b-instruct",
+      "dtype": "q2",
+      "attention": "full",
+      "weight_gb": 8.336,
+      "kv_total_gb": 1.04,
+      "flops_per_token_gflop": 66.686,
+      "intensity_flop_per_byte": 8.0,
+      "bound": "compute",
+      "s_per_token": 3.715096,
+      "tokens_per_s": 0.269,
+      "streamed_from_ssd_tokens_per_s": 0.021234,
+      "key": "deepseek-coder-33b"
+    },
+    {
+      "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+      "dtype": "fp16",
+      "attention": "linear",
+      "weight_gb": 6.288,
+      "kv_total_gb": 0.018,
+      "flops_per_token_gflop": 6.288,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 0.189043,
+      "tokens_per_s": 5.29,
+      "streamed_from_ssd_tokens_per_s": 0.02815,
+      "key": "kimi-linear-48b-a3b"
+    },
+    {
+      "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+      "dtype": "q4",
+      "attention": "linear",
+      "weight_gb": 1.572,
+      "kv_total_gb": 0.018,
+      "flops_per_token_gflop": 6.288,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 0.350294,
+      "tokens_per_s": 2.855,
+      "streamed_from_ssd_tokens_per_s": 0.112599,
+      "key": "kimi-linear-48b-a3b"
+    },
+    {
+      "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+      "dtype": "q2",
+      "attention": "linear",
+      "weight_gb": 0.786,
+      "kv_total_gb": 0.018,
+      "flops_per_token_gflop": 6.288,
+      "intensity_flop_per_byte": 8.0,
+      "bound": "compute",
+      "s_per_token": 0.350294,
+      "tokens_per_s": 2.855,
+      "streamed_from_ssd_tokens_per_s": 0.225199,
+      "key": "kimi-linear-48b-a3b"
+    },
+    {
+      "model": "Qwen/Qwen3-32B",
+      "dtype": "fp16",
+      "attention": "full",
+      "weight_gb": 65.524,
+      "kv_total_gb": 1.074,
+      "flops_per_token_gflop": 65.524,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 1.970009,
+      "tokens_per_s": 0.508,
+      "streamed_from_ssd_tokens_per_s": 0.002701,
+      "key": "qwen3-32b"
+    },
+    {
+      "model": "Qwen/Qwen3-32B",
+      "dtype": "q4",
+      "attention": "full",
+      "weight_gb": 16.381,
+      "kv_total_gb": 1.074,
+      "flops_per_token_gflop": 65.524,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 3.650373,
+      "tokens_per_s": 0.274,
+      "streamed_from_ssd_tokens_per_s": 0.010805,
+      "key": "qwen3-32b"
+    },
+    {
+      "model": "Qwen/Qwen3-32B",
+      "dtype": "q2",
+      "attention": "full",
+      "weight_gb": 8.191,
+      "kv_total_gb": 1.074,
+      "flops_per_token_gflop": 65.524,
+      "intensity_flop_per_byte": 8.0,
+      "bound": "compute",
+      "s_per_token": 3.650373,
+      "tokens_per_s": 0.274,
+      "streamed_from_ssd_tokens_per_s": 0.02161,
+      "key": "qwen3-32b"
+    },
+    {
+      "model": "microsoft/bitnet-b1.58-2B-4T",
+      "dtype": "fp16",
+      "attention": "full",
+      "weight_gb": 5.482,
+      "kv_total_gb": 0.315,
+      "flops_per_token_gflop": 5.482,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 0.164812,
+      "tokens_per_s": 6.068,
+      "streamed_from_ssd_tokens_per_s": 0.032289,
+      "key": "bitnet-b1.58-2b"
+    },
+    {
+      "model": "microsoft/bitnet-b1.58-2B-4T",
+      "dtype": "q4",
+      "attention": "full",
+      "weight_gb": 1.37,
+      "kv_total_gb": 0.315,
+      "flops_per_token_gflop": 5.482,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 0.305389,
+      "tokens_per_s": 3.275,
+      "streamed_from_ssd_tokens_per_s": 0.129156,
+      "key": "bitnet-b1.58-2b"
+    },
+    {
+      "model": "microsoft/bitnet-b1.58-2B-4T",
+      "dtype": "q2",
+      "attention": "full",
+      "weight_gb": 0.685,
+      "kv_total_gb": 0.315,
+      "flops_per_token_gflop": 5.482,
+      "intensity_flop_per_byte": 7.999,
+      "bound": "compute",
+      "s_per_token": 0.305389,
+      "tokens_per_s": 3.275,
+      "streamed_from_ssd_tokens_per_s": 0.258312,
+      "key": "bitnet-b1.58-2b"
+    },
+    {
+      "model": "prism-ml/Ternary-Bonsai-2-27B",
+      "dtype": "fp16",
+      "attention": "full",
+      "weight_gb": 38.348,
+      "kv_total_gb": 1.074,
+      "flops_per_token_gflop": 38.348,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 1.152942,
+      "tokens_per_s": 0.867,
+      "streamed_from_ssd_tokens_per_s": 0.004616,
+      "key": "ternary-bonsai-27b"
+    },
+    {
+      "model": "prism-ml/Ternary-Bonsai-2-27B",
+      "dtype": "q4",
+      "attention": "full",
+      "weight_gb": 9.587,
+      "kv_total_gb": 1.074,
+      "flops_per_token_gflop": 38.348,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 2.136364,
+      "tokens_per_s": 0.468,
+      "streamed_from_ssd_tokens_per_s": 0.018463,
+      "key": "ternary-bonsai-27b"
+    },
+    {
+      "model": "prism-ml/Ternary-Bonsai-2-27B",
+      "dtype": "q2",
+      "attention": "full",
+      "weight_gb": 4.793,
+      "kv_total_gb": 1.074,
+      "flops_per_token_gflop": 38.348,
+      "intensity_flop_per_byte": 8.0,
+      "bound": "compute",
+      "s_per_token": 2.136364,
+      "tokens_per_s": 0.468,
+      "streamed_from_ssd_tokens_per_s": 0.036925,
+      "key": "ternary-bonsai-27b"
+    },
+    {
+      "model": "BlinkDL/rwkv7-g1k-1.5b",
+      "dtype": "fp16",
+      "attention": "recurrent",
+      "weight_gb": 3.356,
+      "kv_total_gb": 0.013,
+      "flops_per_token_gflop": 3.356,
+      "intensity_flop_per_byte": 1.0,
+      "bound": "memory",
+      "s_per_token": 0.100888,
+      "tokens_per_s": 9.912,
+      "streamed_from_ssd_tokens_per_s": 0.052747,
+      "key": "rwkv7-1.5b"
+    },
+    {
+      "model": "BlinkDL/rwkv7-g1k-1.5b",
+      "dtype": "q4",
+      "attention": "recurrent",
+      "weight_gb": 0.839,
+      "kv_total_gb": 0.013,
+      "flops_per_token_gflop": 3.356,
+      "intensity_flop_per_byte": 4.0,
+      "bound": "compute",
+      "s_per_token": 0.186944,
+      "tokens_per_s": 5.349,
+      "streamed_from_ssd_tokens_per_s": 0.210988,
+      "key": "rwkv7-1.5b"
+    },
+    {
+      "model": "BlinkDL/rwkv7-g1k-1.5b",
+      "dtype": "q2",
+      "attention": "recurrent",
+      "weight_gb": 0.419,
+      "kv_total_gb": 0.013,
+      "flops_per_token_gflop": 3.356,
+      "intensity_flop_per_byte": 8.0,
+      "bound": "compute",
+      "s_per_token": 0.186944,
+      "tokens_per_s": 5.349,
+      "streamed_from_ssd_tokens_per_s": 0.421976,
+      "key": "rwkv7-1.5b"
+    }
+  ],
+  "ram_ceiling_params": {
+    "no_kv": {
+      "8": 7400000000.0,
+      "4": 14800000000.0,
+      "2": 29600000000.0
+    },
+    "with_7b_kv_4k": {
+      "8": 7165118976.0,
+      "4": 14330237952.0,
+      "2": 28660475904.0
+    }
+  },
+  "plans": {
+    "three_tier_ssd_architect_33b": {
+      "target": "deepseek-ai/deepseek-coder-33b-instruct",
+      "draft": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "target_gb": 16.671,
+      "draft_gb": 3.808,
+      "kv_gb": 1.04,
+      "total_gb": 22.119,
+      "ram_gb": 8.0,
+      "fits": false,
+      "draft_relative_cost": 0.2284,
+      "target_tokens_per_s": 0.269
+    },
+    "three_tier_ssd_architect_32b": {
+      "target": "Qwen/Qwen3-32B",
+      "draft": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "target_gb": 16.381,
+      "draft_gb": 3.808,
+      "kv_gb": 1.074,
+      "total_gb": 21.863,
+      "ram_gb": 8.0,
+      "fits": false,
+      "draft_relative_cost": 0.2324,
+      "target_tokens_per_s": 0.274
+    },
+    "resident_7b_q4_plus_1b_q2": {
+      "target": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "draft": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "target_gb": 3.808,
+      "draft_gb": 0.275,
+      "kv_gb": 0.235,
+      "total_gb": 4.918,
+      "ram_gb": 8.0,
+      "fits": true,
+      "draft_relative_cost": 0.1444,
+      "target_tokens_per_s": 1.179
+    },
+    "resident_kimi_linear_q4": {
+      "target": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+      "draft": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "target_gb": 1.572,
+      "draft_gb": 0.275,
+      "kv_gb": 0.018,
+      "total_gb": 2.465,
+      "ram_gb": 8.0,
+      "fits": true,
+      "draft_relative_cost": 0.3499,
+      "target_tokens_per_s": 2.855
+    },
+    "resident_ternary_27b_q2": {
+      "target": "prism-ml/Ternary-Bonsai-2-27B",
+      "draft": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "target_gb": 4.793,
+      "draft_gb": 0.275,
+      "kv_gb": 1.074,
+      "total_gb": 6.742,
+      "ram_gb": 8.0,
+      "fits": true,
+      "draft_relative_cost": 0.0574,
+      "target_tokens_per_s": 0.468
+    }
+  },
+  "spec_decode": {
+    "0.6": [
+      {
+        "draft_cost": 0.02,
+        "optimal_gamma": 6,
+        "speedup": 2.17,
+        "ceiling_1_over_1_minus_alpha": 2.5
+      },
+      {
+        "draft_cost": 0.05,
+        "optimal_gamma": 4,
+        "speedup": 1.921,
+        "ceiling_1_over_1_minus_alpha": 2.5
+      },
+      {
+        "draft_cost": 0.1,
+        "optimal_gamma": 3,
+        "speedup": 1.674,
+        "ceiling_1_over_1_minus_alpha": 2.5
+      },
+      {
+        "draft_cost": 0.2,
+        "optimal_gamma": 2,
+        "speedup": 1.4,
+        "ceiling_1_over_1_minus_alpha": 2.5
+      },
+      {
+        "draft_cost": 0.5,
+        "optimal_gamma": 1,
+        "speedup": 1.067,
+        "ceiling_1_over_1_minus_alpha": 2.5
+      },
+      {
+        "draft_cost": 1.0,
+        "optimal_gamma": 0,
+        "speedup": 1.0,
+        "ceiling_1_over_1_minus_alpha": 2.5
+      }
+    ],
+    "0.7": [
+      {
+        "draft_cost": 0.02,
+        "optimal_gamma": 8,
+        "speedup": 2.758,
+        "ceiling_1_over_1_minus_alpha": 3.333
+      },
+      {
+        "draft_cost": 0.05,
+        "optimal_gamma": 6,
+        "speedup": 2.353,
+        "ceiling_1_over_1_minus_alpha": 3.333
+      },
+      {
+        "draft_cost": 0.1,
+        "optimal_gamma": 4,
+        "speedup": 1.981,
+        "ceiling_1_over_1_minus_alpha": 3.333
+      },
+      {
+        "draft_cost": 0.2,
+        "optimal_gamma": 3,
+        "speedup": 1.583,
+        "ceiling_1_over_1_minus_alpha": 3.333
+      },
+      {
+        "draft_cost": 0.5,
+        "optimal_gamma": 1,
+        "speedup": 1.133,
+        "ceiling_1_over_1_minus_alpha": 3.333
+      },
+      {
+        "draft_cost": 1.0,
+        "optimal_gamma": 0,
+        "speedup": 1.0,
+        "ceiling_1_over_1_minus_alpha": 3.333
+      }
+    ],
+    "0.8": [
+      {
+        "draft_cost": 0.02,
+        "optimal_gamma": 11,
+        "speedup": 3.817,
+        "ceiling_1_over_1_minus_alpha": 5.0
+      },
+      {
+        "draft_cost": 0.05,
+        "optimal_gamma": 8,
+        "speedup": 3.092,
+        "ceiling_1_over_1_minus_alpha": 5.0
+      },
+      {
+        "draft_cost": 0.1,
+        "optimal_gamma": 6,
+        "speedup": 2.47,
+        "ceiling_1_over_1_minus_alpha": 5.0
+      },
+      {
+        "draft_cost": 0.2,
+        "optimal_gamma": 4,
+        "speedup": 1.868,
+        "ceiling_1_over_1_minus_alpha": 5.0
+      },
+      {
+        "draft_cost": 0.5,
+        "optimal_gamma": 2,
+        "speedup": 1.22,
+        "ceiling_1_over_1_minus_alpha": 5.0
+      },
+      {
+        "draft_cost": 1.0,
+        "optimal_gamma": 0,
+        "speedup": 1.0,
+        "ceiling_1_over_1_minus_alpha": 5.0
+      }
+    ],
+    "0.9": [
+      {
+        "draft_cost": 0.02,
+        "optimal_gamma": 12,
+        "speedup": 6.015,
+        "ceiling_1_over_1_minus_alpha": 10.0
+      },
+      {
+        "draft_cost": 0.05,
+        "optimal_gamma": 12,
+        "speedup": 4.661,
+        "ceiling_1_over_1_minus_alpha": 10.0
+      },
+      {
+        "draft_cost": 0.1,
+        "optimal_gamma": 10,
+        "speedup": 3.431,
+        "ceiling_1_over_1_minus_alpha": 10.0
+      },
+      {
+        "draft_cost": 0.2,
+        "optimal_gamma": 7,
+        "speedup": 2.373,
+        "ceiling_1_over_1_minus_alpha": 10.0
+      },
+      {
+        "draft_cost": 0.5,
+        "optimal_gamma": 3,
+        "speedup": 1.376,
+        "ceiling_1_over_1_minus_alpha": 10.0
+      },
+      {
+        "draft_cost": 1.0,
+        "optimal_gamma": 0,
+        "speedup": 1.0,
+        "ceiling_1_over_1_minus_alpha": 10.0
+      }
+    ]
+  },
+  "routes": {
+    "alpha_0.9_len_4096": {
+      "tier": "speculative",
+      "gamma": 8,
+      "predicted_speedup": 2.842,
+      "reason": "alpha=0.90, c=0.144 -> gamma*=8, S=2.84"
+    },
+    "alpha_0.7_len_4096": {
+      "tier": "speculative",
+      "gamma": 3,
+      "predicted_speedup": 1.767,
+      "reason": "alpha=0.70, c=0.144 -> gamma*=3, S=1.77"
+    },
+    "alpha_0.9_len_60000": {
+      "tier": "speculative",
+      "gamma": 8,
+      "predicted_speedup": 2.842,
+      "reason": "alpha=0.90, c=0.144 -> gamma*=8, S=2.84"
+    }
+  },
+  "jepa_collapse": [
+    {
+      "mode": "none",
+      "seed": 0,
+      "latent_energy": 0.01168,
+      "participation_ratio": 1.981,
+      "next_step_r2": 0.9715,
+      "hankel_rank": 2,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        0.8905,
+        0.9253
+      ]
+    },
+    {
+      "mode": "vicreg",
+      "seed": 0,
+      "latent_energy": 0.97101,
+      "participation_ratio": 1.245,
+      "next_step_r2": 0.9928,
+      "hankel_rank": 2,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        0.9831,
+        0.9831
+      ]
+    },
+    {
+      "mode": "koopman_dim",
+      "seed": 0,
+      "latent_energy": 0.9732,
+      "participation_ratio": 3.494,
+      "next_step_r2": 0.9952,
+      "hankel_rank": 4,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "mode": "none",
+      "seed": 1,
+      "latent_energy": 0.0438,
+      "participation_ratio": 1.824,
+      "next_step_r2": 0.9872,
+      "hankel_rank": 2,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        0.9665,
+        0.9665
+      ]
+    },
+    {
+      "mode": "vicreg",
+      "seed": 1,
+      "latent_energy": 0.99224,
+      "participation_ratio": 2.169,
+      "next_step_r2": 0.996,
+      "hankel_rank": 4,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "mode": "koopman_dim",
+      "seed": 1,
+      "latent_energy": 0.97885,
+      "participation_ratio": 3.493,
+      "next_step_r2": 0.9953,
+      "hankel_rank": 4,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "mode": "none",
+      "seed": 2,
+      "latent_energy": 0.02244,
+      "participation_ratio": 1.976,
+      "next_step_r2": 0.9803,
+      "hankel_rank": 2,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        0.7236,
+        0.7236
+      ]
+    },
+    {
+      "mode": "vicreg",
+      "seed": 2,
+      "latent_energy": 0.9815,
+      "participation_ratio": 1.237,
+      "next_step_r2": 0.9944,
+      "hankel_rank": 2,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        0.9996,
+        0.9996
+      ]
+    },
+    {
+      "mode": "koopman_dim",
+      "seed": 2,
+      "latent_energy": 0.97441,
+      "participation_ratio": 3.491,
+      "next_step_r2": 0.9951,
+      "hankel_rank": 4,
+      "dmd_abs_lambda": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "state_memory": {
+    "linear_state_bytes": 17915904,
+    "kv_bytes_4k": 1019215872,
+    "kv_bytes_32k": 8153726976,
+    "kv_bytes_128k": 32614907904
+  }
+}
