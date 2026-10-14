@@ -1,4 +1,5 @@
 # build artifacts
+bench/ridge_kernels
 bench/architect_kernels
 *.o
 *.so
