@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 
-from architect.spec_decode import (
+from ridge.spec_decode import (
     acceptance_rate, expected_tokens, optimal_gamma, simulate, speedup, total_variation,
 )
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""architect -- answer the sizing and routing questions from the command line.
+"""ridge -- answer the sizing and routing questions from the command line.
 
-    python -m architect.cli size                      # what fits in the RAM budget
-    python -m architect.cli throughput --dtype q4     # tokens/s for every candidate
-    python -m architect.cli route --alpha 0.9         # tier + draft length
-    python -m architect.cli spec --alpha 0.8          # speedup vs draft cost
-    python -m architect.cli state                     # O(1) state vs KV memory
+    python -m ridge.cli size                      # what fits in the RAM budget
+    python -m ridge.cli throughput --dtype q4     # tokens/s for every candidate
+    python -m ridge.cli route --alpha 0.9         # tier + draft length
+    python -m ridge.cli spec --alpha 0.8          # speedup vs draft cost
+    python -m ridge.cli state                     # O(1) state vs KV memory
 """
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ def load_machine(ram_gb: float) -> Machine:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(prog="architect")
+    ap = argparse.ArgumentParser(prog="ridge")
     ap.add_argument("command", choices=["size", "throughput", "route", "spec", "state"])
     ap.add_argument("--ram-gb", type=float, default=8.0)
     ap.add_argument("--dtype", default="q4")
@@ -55,7 +55,7 @@ def main() -> int:
             "resident 7B q4 + 1.1B q2": ("qwen2.5-coder-7b", "tinyllama-1.1b", "q4", "q2"),
             "resident Kimi-Linear q4 + 1.1B q2": ("kimi-linear-48b-a3b", "tinyllama-1.1b", "q4", "q2"),
             "resident ternary 27B q2 + 1.1B q2": ("ternary-bonsai-27b", "tinyllama-1.1b", "q2", "q2"),
-            "three-tier 33B architect (SSD)": ("deepseek-coder-33b", "qwen2.5-coder-7b", "q4", "q4"),
+            "three-tier 33B Architect (SSD)": ("deepseek-coder-33b", "qwen2.5-coder-7b", "q4", "q4"),
         }.items():
             p = plan_tiers(specs[t], specs[d], m, td, dd, args.seq_len)
             print(f"  {name}: {p['total_gb']:.2f} GB fits={p['fits']}")

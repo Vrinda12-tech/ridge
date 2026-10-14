@@ -10,7 +10,7 @@ import urllib.request
 API = "https://huggingface.co/api/models/{}"
 
 KEEP = (
-    "model_type", "architectures", "num_hidden_layers", "n_layer", "hidden_size", "n_embd",
+    "model_type", "ridgeures", "num_hidden_layers", "n_layer", "hidden_size", "n_embd",
     "num_attention_heads", "n_head", "intermediate_size", "vocab_size", "max_position_embeddings",
     "context_length", "num_key_value_heads", "n_head_kv", "moe_intermediate_size", "num_experts",
     "n_experts", "n_routed_experts", "num_experts_per_tok", "n_expert_used", "head_dim",

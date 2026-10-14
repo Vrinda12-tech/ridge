@@ -2,10 +2,10 @@
 import numpy as np
 import pytest
 
-from architect.jepa import (
+from ridge.jepa import (
     dmd, hankel, hankel_rank_gap, make_rank_r_series, participation_ratio, train_latent, vicreg_terms,
 )
-from architect.state import Reservoir, kalman, steady_state_gain
+from ridge.state import Reservoir, kalman, steady_state_gain
 
 
 def test_hankel_shape_and_rank_of_a_pure_exponential():

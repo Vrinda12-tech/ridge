@@ -1,17 +1,18 @@
 /*
- * architect_kernels.c -- measure the roofs this machine actually has, and run the
+ * ridge_kernels.c -- measure the roofs this machine actually has, and run the
  * two kernels the cost model needs: a 2-bit ternary GEMV (bit-sliced) and the
  * per-token memory of a constant-state recurrence against a KV cache.
  *
  * Build:
- *   gcc -O3 -march=native -o bench/architect_kernels kernel/architect_kernels.c -lm -lpthread
+ *   gcc -O3 -march=native -o bench/ridge_kernels kernel/ridge_kernels.c -lm -lpthread
  * Run:
- *   ./bench/architect_kernels <model_dir>        # model_dir holds a large file for O_DIRECT
+ *   ./bench/ridge_kernels <model_dir>        # model_dir holds a large file for O_DIRECT
  * Prints one JSON object on stdout. Every number is a median of timed passes.
  *
  * Why each piece exists:
- *   - roofline()  : the compute roof and the memory roofs, in the same stream mixes
- *                   the LLM decode step uses (read-only weights, read+write state).
+ *   - the read/copy/FMA roofs : what the decode step can reach, in the stream
+ *                   mixes it uses (read-only weights, read+write state). Their
+ *                   ratio to the bandwidth is the ridge point, I* = P/B.
  *   - disk_*()    : what a weight-streaming engine can actually pull off the SSD,
  *                   direct (O_DIRECT, no page cache) vs buffered vs mmap-once.
  *   - ternary_gemv: the arithmetic a 2-bit weight model needs. If this is
@@ -291,7 +292,7 @@ int main(int argc, char **argv) {
 
   /* disk */
   char path[4096];
-  snprintf(path, sizeof(path), "%s/.architect_io_probe.bin", model_dir);
+  snprintf(path, sizeof(path), "%s/.ridge_io_probe.bin", model_dir);
   size_t disk_bytes = 512u << 20;
   int have_disk = 0;
   {

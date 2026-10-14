@@ -8,14 +8,14 @@
   },
   "kernel": {
     "cpu_avx512": 1,
-    "roof_read_gbs": 33.261,
-    "roof_copy_gbs": 20.639,
-    "roof_fma_gflops": 109.0,
-    "ridge_flop_per_byte": 3.278,
+    "roof_read_gbs": 32.65,
+    "roof_copy_gbs": 21.579,
+    "roof_fma_gflops": 108.9,
+    "ridge_flop_per_byte": 3.336,
     "disk_direct_gbs": 0.177,
-    "disk_buffered_gbs": 11.659,
-    "ternary_gflops": 17.95,
-    "ternary_packed_gbs": 2.244,
+    "disk_buffered_gbs": 10.85,
+    "ternary_gflops": 17.86,
+    "ternary_packed_gbs": 2.232,
     "ternary_ridge_flop_per_byte": 8.0,
     "ternary_max_abs_err": 1.549e-05,
     "linear_state_bytes_per_token": 17915904,
@@ -23,12 +23,12 @@
     "kv_bytes_at_ctx8192": 2038431744
   },
   "machine": {
-    "read_gbs": 33.261,
-    "copy_gbs": 20.639,
-    "fma_gflops": 109.0,
+    "read_gbs": 32.65,
+    "copy_gbs": 21.579,
+    "fma_gflops": 108.9,
     "disk_direct_gbs": 0.177,
-    "disk_buffered_gbs": 11.659,
-    "ridge_flop_per_byte": 3.277,
+    "disk_buffered_gbs": 10.85,
+    "ridge_flop_per_byte": 3.335,
     "ram_budget_gb": 8.0
   },
   "hub_models": [
@@ -360,8 +360,8 @@
       "flops_per_token_gflop": 15.231,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.457924,
-      "tokens_per_s": 2.184,
+      "s_per_token": 0.466494,
+      "tokens_per_s": 2.144,
       "streamed_from_ssd_tokens_per_s": 0.011621,
       "key": "qwen2.5-coder-7b"
     },
@@ -374,8 +374,8 @@
       "flops_per_token_gflop": 15.231,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.848522,
-      "tokens_per_s": 1.179,
+      "s_per_token": 0.852798,
+      "tokens_per_s": 1.173,
       "streamed_from_ssd_tokens_per_s": 0.046484,
       "key": "qwen2.5-coder-7b"
     },
@@ -388,8 +388,8 @@
       "flops_per_token_gflop": 15.231,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 0.848522,
-      "tokens_per_s": 1.179,
+      "s_per_token": 0.852798,
+      "tokens_per_s": 1.173,
       "streamed_from_ssd_tokens_per_s": 0.092968,
       "key": "qwen2.5-coder-7b"
     },
@@ -402,8 +402,8 @@
       "flops_per_token_gflop": 3.554,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.106854,
-      "tokens_per_s": 9.359,
+      "s_per_token": 0.108854,
+      "tokens_per_s": 9.187,
       "streamed_from_ssd_tokens_per_s": 0.049802,
       "key": "qwen2.5-coder-1.5b"
     },
@@ -416,8 +416,8 @@
       "flops_per_token_gflop": 3.554,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.197998,
-      "tokens_per_s": 5.051,
+      "s_per_token": 0.198995,
+      "tokens_per_s": 5.025,
       "streamed_from_ssd_tokens_per_s": 0.199209,
       "key": "qwen2.5-coder-1.5b"
     },
@@ -430,8 +430,8 @@
       "flops_per_token_gflop": 3.554,
       "intensity_flop_per_byte": 7.999,
       "bound": "compute",
-      "s_per_token": 0.197998,
-      "tokens_per_s": 5.051,
+      "s_per_token": 0.198995,
+      "tokens_per_s": 5.025,
       "streamed_from_ssd_tokens_per_s": 0.398418,
       "key": "qwen2.5-coder-1.5b"
     },
@@ -444,8 +444,8 @@
       "flops_per_token_gflop": 2.2,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.066147,
-      "tokens_per_s": 15.118,
+      "s_per_token": 0.067385,
+      "tokens_per_s": 14.84,
       "streamed_from_ssd_tokens_per_s": 0.080451,
       "key": "tinyllama-1.1b"
     },
@@ -458,8 +458,8 @@
       "flops_per_token_gflop": 2.2,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.122568,
-      "tokens_per_s": 8.159,
+      "s_per_token": 0.123185,
+      "tokens_per_s": 8.118,
       "streamed_from_ssd_tokens_per_s": 0.321805,
       "key": "tinyllama-1.1b"
     },
@@ -472,8 +472,8 @@
       "flops_per_token_gflop": 2.2,
       "intensity_flop_per_byte": 7.999,
       "bound": "compute",
-      "s_per_token": 0.122568,
-      "tokens_per_s": 8.159,
+      "s_per_token": 0.123185,
+      "tokens_per_s": 8.118,
       "streamed_from_ssd_tokens_per_s": 0.643609,
       "key": "tinyllama-1.1b"
     },
@@ -486,8 +486,8 @@
       "flops_per_token_gflop": 66.686,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 2.004937,
-      "tokens_per_s": 0.499,
+      "s_per_token": 2.042457,
+      "tokens_per_s": 0.49,
       "streamed_from_ssd_tokens_per_s": 0.002654,
       "key": "deepseek-coder-33b"
     },
@@ -500,8 +500,8 @@
       "flops_per_token_gflop": 66.686,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 3.715096,
-      "tokens_per_s": 0.269,
+      "s_per_token": 3.733817,
+      "tokens_per_s": 0.268,
       "streamed_from_ssd_tokens_per_s": 0.010617,
       "key": "deepseek-coder-33b"
     },
@@ -514,8 +514,8 @@
       "flops_per_token_gflop": 66.686,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 3.715096,
-      "tokens_per_s": 0.269,
+      "s_per_token": 3.733817,
+      "tokens_per_s": 0.268,
       "streamed_from_ssd_tokens_per_s": 0.021234,
       "key": "deepseek-coder-33b"
     },
@@ -528,8 +528,8 @@
       "flops_per_token_gflop": 6.288,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.189043,
-      "tokens_per_s": 5.29,
+      "s_per_token": 0.192581,
+      "tokens_per_s": 5.193,
       "streamed_from_ssd_tokens_per_s": 0.02815,
       "key": "kimi-linear-48b-a3b"
     },
@@ -542,8 +542,8 @@
       "flops_per_token_gflop": 6.288,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.350294,
-      "tokens_per_s": 2.855,
+      "s_per_token": 0.352059,
+      "tokens_per_s": 2.84,
       "streamed_from_ssd_tokens_per_s": 0.112599,
       "key": "kimi-linear-48b-a3b"
     },
@@ -556,8 +556,8 @@
       "flops_per_token_gflop": 6.288,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 0.350294,
-      "tokens_per_s": 2.855,
+      "s_per_token": 0.352059,
+      "tokens_per_s": 2.84,
       "streamed_from_ssd_tokens_per_s": 0.225199,
       "key": "kimi-linear-48b-a3b"
     },
@@ -570,8 +570,8 @@
       "flops_per_token_gflop": 65.524,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 1.970009,
-      "tokens_per_s": 0.508,
+      "s_per_token": 2.006875,
+      "tokens_per_s": 0.498,
       "streamed_from_ssd_tokens_per_s": 0.002701,
       "key": "qwen3-32b"
     },
@@ -584,8 +584,8 @@
       "flops_per_token_gflop": 65.524,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 3.650373,
-      "tokens_per_s": 0.274,
+      "s_per_token": 3.668768,
+      "tokens_per_s": 0.273,
       "streamed_from_ssd_tokens_per_s": 0.010805,
       "key": "qwen3-32b"
     },
@@ -598,8 +598,8 @@
       "flops_per_token_gflop": 65.524,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 3.650373,
-      "tokens_per_s": 0.274,
+      "s_per_token": 3.668768,
+      "tokens_per_s": 0.273,
       "streamed_from_ssd_tokens_per_s": 0.02161,
       "key": "qwen3-32b"
     },
@@ -612,8 +612,8 @@
       "flops_per_token_gflop": 5.482,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.164812,
-      "tokens_per_s": 6.068,
+      "s_per_token": 0.167896,
+      "tokens_per_s": 5.956,
       "streamed_from_ssd_tokens_per_s": 0.032289,
       "key": "bitnet-b1.58-2b"
     },
@@ -626,8 +626,8 @@
       "flops_per_token_gflop": 5.482,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.305389,
-      "tokens_per_s": 3.275,
+      "s_per_token": 0.306928,
+      "tokens_per_s": 3.258,
       "streamed_from_ssd_tokens_per_s": 0.129156,
       "key": "bitnet-b1.58-2b"
     },
@@ -640,8 +640,8 @@
       "flops_per_token_gflop": 5.482,
       "intensity_flop_per_byte": 7.999,
       "bound": "compute",
-      "s_per_token": 0.305389,
-      "tokens_per_s": 3.275,
+      "s_per_token": 0.306928,
+      "tokens_per_s": 3.258,
       "streamed_from_ssd_tokens_per_s": 0.258312,
       "key": "bitnet-b1.58-2b"
     },
@@ -654,8 +654,8 @@
       "flops_per_token_gflop": 38.348,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 1.152942,
-      "tokens_per_s": 0.867,
+      "s_per_token": 1.174518,
+      "tokens_per_s": 0.851,
       "streamed_from_ssd_tokens_per_s": 0.004616,
       "key": "ternary-bonsai-27b"
     },
@@ -668,8 +668,8 @@
       "flops_per_token_gflop": 38.348,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 2.136364,
-      "tokens_per_s": 0.468,
+      "s_per_token": 2.14713,
+      "tokens_per_s": 0.466,
       "streamed_from_ssd_tokens_per_s": 0.018463,
       "key": "ternary-bonsai-27b"
     },
@@ -682,8 +682,8 @@
       "flops_per_token_gflop": 38.348,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 2.136364,
-      "tokens_per_s": 0.468,
+      "s_per_token": 2.14713,
+      "tokens_per_s": 0.466,
       "streamed_from_ssd_tokens_per_s": 0.036925,
       "key": "ternary-bonsai-27b"
     },
@@ -696,8 +696,8 @@
       "flops_per_token_gflop": 3.356,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.100888,
-      "tokens_per_s": 9.912,
+      "s_per_token": 0.102776,
+      "tokens_per_s": 9.73,
       "streamed_from_ssd_tokens_per_s": 0.052747,
       "key": "rwkv7-1.5b"
     },
@@ -710,8 +710,8 @@
       "flops_per_token_gflop": 3.356,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.186944,
-      "tokens_per_s": 5.349,
+      "s_per_token": 0.187886,
+      "tokens_per_s": 5.322,
       "streamed_from_ssd_tokens_per_s": 0.210988,
       "key": "rwkv7-1.5b"
     },
@@ -724,8 +724,8 @@
       "flops_per_token_gflop": 3.356,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 0.186944,
-      "tokens_per_s": 5.349,
+      "s_per_token": 0.187886,
+      "tokens_per_s": 5.322,
       "streamed_from_ssd_tokens_per_s": 0.421976,
       "key": "rwkv7-1.5b"
     }
@@ -743,7 +743,7 @@
     }
   },
   "plans": {
-    "three_tier_ssd_architect_33b": {
+    "three_tier_ssd_ridge_33b": {
       "target": "deepseek-ai/deepseek-coder-33b-instruct",
       "draft": "Qwen/Qwen2.5-Coder-7B-Instruct",
       "target_gb": 16.671,
@@ -753,9 +753,9 @@
       "ram_gb": 8.0,
       "fits": false,
       "draft_relative_cost": 0.2284,
-      "target_tokens_per_s": 0.269
+      "target_tokens_per_s": 0.268
     },
-    "three_tier_ssd_architect_32b": {
+    "three_tier_ssd_ridge_32b": {
       "target": "Qwen/Qwen3-32B",
       "draft": "Qwen/Qwen2.5-Coder-7B-Instruct",
       "target_gb": 16.381,
@@ -765,7 +765,7 @@
       "ram_gb": 8.0,
       "fits": false,
       "draft_relative_cost": 0.2324,
-      "target_tokens_per_s": 0.274
+      "target_tokens_per_s": 0.273
     },
     "resident_7b_q4_plus_1b_q2": {
       "target": "Qwen/Qwen2.5-Coder-7B-Instruct",
@@ -777,7 +777,7 @@
       "ram_gb": 8.0,
       "fits": true,
       "draft_relative_cost": 0.1444,
-      "target_tokens_per_s": 1.179
+      "target_tokens_per_s": 1.173
     },
     "resident_kimi_linear_q4": {
       "target": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
@@ -789,7 +789,7 @@
       "ram_gb": 8.0,
       "fits": true,
       "draft_relative_cost": 0.3499,
-      "target_tokens_per_s": 2.855
+      "target_tokens_per_s": 2.84
     },
     "resident_ternary_27b_q2": {
       "target": "prism-ml/Ternary-Bonsai-2-27B",
@@ -801,7 +801,7 @@
       "ram_gb": 8.0,
       "fits": true,
       "draft_relative_cost": 0.0574,
-      "target_tokens_per_s": 0.468
+      "target_tokens_per_s": 0.466
     }
   },
   "spec_decode": {

@@ -1,4 +1,4 @@
-"""architect -- run a coding model on 8 GB of RAM, no CUDA, from arithmetic.
+"""ridge -- run a coding model on 8 GB of RAM, no CUDA, from arithmetic.
 
 The package turns the derivations in `docs/MATH.md` into code:
 

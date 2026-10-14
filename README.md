@@ -1,4 +1,4 @@
-# architect
+# ridge
 
 Run a coding model on **8 GB of RAM, no CUDA**, and be able to say *why* it does or
 does not work. This repository is the arithmetic and the measurements behind that
@@ -12,7 +12,7 @@ and where the original plan was wrong.
 ```
 docs/MATH.md          the derivations, in order
 kernel/*.c            the two kernels that decide everything (AVX-512)
-architect/            the cost model, spec-decode math, JEPA readout, router
+ridge/            the cost model, spec-decode math, JEPA readout, router
 bench/run.py          measure the box, size the models, write results/
 results/              machine.json and MEASUREMENTS.md, both generated
 tests/                the derivations checked against simulation
@@ -73,8 +73,8 @@ pip install numpy pytest
 python bench/run.py            # build the kernel, measure the box, write results/
 python bench/report.py         # results/machine.json -> results/MEASUREMENTS.md
 python -m pytest tests/ -q     # the derivations, checked
-python -m architect.cli size   # what fits
-python -m architect.cli route --alpha 0.9
+python -m ridge.cli size   # what fits
+python -m ridge.cli route --alpha 0.9
 ```
 
 `bench/run.py` re-measures every constant it uses; nothing in the model is
@@ -83,7 +83,7 @@ HuggingFace hub so the sizing is against actual configs, not guesses.
 
 ## The kernels
 
-`kernel/architect_kernels.c` is one file, no dependencies, and it measures the
+`kernel/ridge_kernels.c` is one file, no dependencies, and it measures the
 things the whole design turns on:
 
 * the read, copy and FMA roofs, in the stream mixes a decode step uses;

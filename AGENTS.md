@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Repository memory for `architect`. Read this before changing anything.
+Repository memory for `ridge`. Read this before changing anything.
 
 ## What this repository is
 
@@ -12,7 +12,7 @@ weights to test, it is out of scope for a normal run.
 ## The one rule
 
 **No number without a measurement or a derivation.** Every constant in the model
-comes from either `kernel/architect_kernels.c` (this machine) or the HuggingFace
+comes from either `kernel/ridge_kernels.c` (this machine) or the HuggingFace
 hub (`tools/hf_probe.py`, real configs). If you add a quantity, measure it or
 derive it in `docs/MATH.md`, and add a test.
 
@@ -20,14 +20,14 @@ derive it in `docs/MATH.md`, and add a test.
 
 ```
 docs/MATH.md              the derivations. Sections are referenced by number from code.
-kernel/architect_kernels.c  roofs + ternary GEMV + state memory. One file, no deps.
-architect/model.py        geometry, param counts, bytes. spec_from_hf_config() builds from hub JSON.
-architect/roofline.py     Machine (rates), decode_time(), plan_tiers(), budget math.
-architect/spec_decode.py  acceptance identity, expected_tokens(), speedup(), optimal_gamma().
-architect/jepa.py         hankel/dmd/participation_ratio, train_latent() and the collapse control.
-architect/state.py        kalman(), Reservoir, state/kv memory.
-architect/router.py       Foreman: tier + gamma from measured alpha and c.
-architect/cli.py          command line.
+kernel/ridge_kernels.c  roofs + ternary GEMV + state memory. One file, no deps.
+ridge/model.py        geometry, param counts, bytes. spec_from_hf_config() builds from hub JSON.
+ridge/roofline.py     Machine (rates), decode_time(), plan_tiers(), budget math.
+ridge/spec_decode.py  acceptance identity, expected_tokens(), speedup(), optimal_gamma().
+ridge/jepa.py         hankel/dmd/participation_ratio, train_latent() and the collapse control.
+ridge/state.py        kalman(), Reservoir, state/kv memory.
+ridge/router.py       Foreman: tier + gamma from measured alpha and c.
+ridge/cli.py          command line.
 bench/run.py              measure -> results/machine.json (the source of truth).
 bench/report.py           results/machine.json -> results/MEASUREMENTS.md.
 tools/hf_probe.py         HuggingFace hub metadata probe (cached to results/hf_models.json).
@@ -41,8 +41,8 @@ pip install --user numpy pytest
 python bench/run.py            # needs network for the hub probe; --no-net uses the cache
 python bench/report.py
 python -m pytest tests/ -q
-python -m architect.cli {size,throughput,route,spec,state}
-gcc -O3 -march=native -o bench/architect_kernels kernel/architect_kernels.c -lm -lpthread
+python -m ridge.cli {size,throughput,route,spec,state}
+gcc -O3 -march=native -o bench/ridge_kernels kernel/ridge_kernels.c -lm -lpthread
 ```
 
 `bench/run.py` builds the kernel itself if the source is newer than the binary.

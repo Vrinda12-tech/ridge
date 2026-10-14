@@ -1,11 +1,11 @@
 """Tests for the roofline cost model and the RAM budget (docs/MATH.md Sections 1, 4, 6)."""
 import pytest
 
-from architect.model import ModelSpec, bytes_per_weight, reference_specs
-from architect.roofline import (
+from ridge.model import ModelSpec, bytes_per_weight, reference_specs
+from ridge.roofline import (
     Machine, decode_time, fits, intensity, max_params_in_budget, plan_tiers, tokens_per_second,
 )
-from architect.state import kv_memory_bytes, state_memory_bytes
+from ridge.state import kv_memory_bytes, state_memory_bytes
 
 
 def test_bytes_per_weight():

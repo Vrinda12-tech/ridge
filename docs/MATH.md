@@ -75,7 +75,7 @@ quantified: at q4 the 7B model's weights are 3.81 GB, so the memory roof allows
 $3.81/32.1 = 8.4$ tok/s, and the measured kernel delivers 1.17 — a **7.2× gap**.
 Closing it is an arithmetic-kernel problem (the masked-add bit-slice chain has a
 dependency latency; VNNI `vpdpbusd` on pre-expanded int8, or a wider unroll,
-is the way), not a model problem. The kernel in `kernel/architect_kernels.c` is
+is the way), not a model problem. The kernel in `kernel/ridge_kernels.c` is
 deliberately the simple version so the gap is measurable rather than hidden.
 
 ### 1.3 Why the SSD cannot be in the loop

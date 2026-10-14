@@ -3,7 +3,7 @@
 
 Nothing here is hard-coded: the roofs come from the C kernel, the model geometry
 comes from the HuggingFace hub (cached), and the throughput and budget come from
-the arithmetic in `architect`.
+the arithmetic in `ridge`.
 
     python bench/run.py            # full: build the kernel, probe the hub, write results
     python bench/run.py --no-net   # reuse the cached hub data
@@ -21,14 +21,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from architect.model import reference_specs, spec_as_dict  # noqa: E402
-from architect.roofline import (  # noqa: E402
+from ridge.model import reference_specs, spec_as_dict  # noqa: E402
+from ridge.roofline import (  # noqa: E402
     Machine, decode_time, max_params_in_budget, plan_tiers, tokens_per_second,
 )
-from architect.spec_decode import optimal_gamma, speedup, speedup_table  # noqa: E402
-from architect.router import Foreman  # noqa: E402
-from architect.jepa import make_rank_r_series, train_latent  # noqa: E402
-from architect.state import kv_memory_bytes, state_memory_bytes  # noqa: E402
+from ridge.spec_decode import optimal_gamma, speedup, speedup_table  # noqa: E402
+from ridge.router import Foreman  # noqa: E402
+from ridge.jepa import make_rank_r_series, train_latent  # noqa: E402
+from ridge.state import kv_memory_bytes, state_memory_bytes  # noqa: E402
 
 RESULTS = ROOT / "results"
 RESULTS.mkdir(exist_ok=True)
@@ -47,8 +47,8 @@ HF_REPOS = [
 
 
 def build_kernel() -> Path:
-    binary = ROOT / "bench" / "architect_kernels"
-    src = ROOT / "kernel" / "architect_kernels.c"
+    binary = ROOT / "bench" / "ridge_kernels"
+    src = ROOT / "kernel" / "ridge_kernels.c"
     if not binary.exists() or binary.stat().st_mtime < src.stat().st_mtime:
         subprocess.run(
             ["gcc", "-O3", "-march=native", "-o", str(binary), str(src), "-lm", "-lpthread"],
@@ -124,9 +124,9 @@ def main() -> int:
 
     # 3. does the three-tier plan fit, and what is the resident alternative
     plans = {
-        "three_tier_ssd_architect_33b": plan_tiers(
+        "three_tier_ssd_ridge_33b": plan_tiers(
             specs["deepseek-coder-33b"], specs["qwen2.5-coder-7b"], m, "q4", "q4", 4096),
-        "three_tier_ssd_architect_32b": plan_tiers(
+        "three_tier_ssd_ridge_32b": plan_tiers(
             specs["qwen3-32b"], specs["qwen2.5-coder-7b"], m, "q4", "q4", 4096),
         "resident_7b_q4_plus_1b_q2": plan_tiers(
             specs["qwen2.5-coder-7b"], specs["tinyllama-1.1b"], m, "q4", "q2", 4096),

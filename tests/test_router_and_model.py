@@ -1,9 +1,9 @@
 """Tests for the geometry, the tier planner and the router."""
 import pytest
 
-from architect.model import reference_specs, spec_from_hf_config
-from architect.roofline import Machine, plan_tiers
-from architect.router import Foreman
+from ridge.model import reference_specs, spec_from_hf_config
+from ridge.roofline import Machine, plan_tiers
+from ridge.router import Foreman
 
 
 def test_spec_from_hf_config_dense():
