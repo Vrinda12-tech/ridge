@@ -1,5 +1,7 @@
 # ridge
 
+[![CI](https://github.com/Vrinda12-tech/ridge/actions/workflows/ci.yml/badge.svg)](https://github.com/Vrinda12-tech/ridge/actions/workflows/ci.yml)
+
 Run a coding model on **8 GB of RAM, no CUDA**, and be able to say *why* it does or
 does not work. This repository is the arithmetic and the measurements behind that
 question, plus the two kernels the answer depends on.
