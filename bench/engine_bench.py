@@ -146,12 +146,12 @@ def bench_layer_throughput() -> dict:
                  w((dff, d)), w((d, dff)), np.ones(d, np.float32),
                  np.ones(d, np.float32))
     L.set_heads(n_heads)
-    dh = d // n_heads
 
     out = {"d": d, "n_heads": n_heads, "d_ff": dff, "full_attention": [],
            "delta_state": []}
 
     # delta path: flat in T
+    dh = d // n_heads
     st = np.zeros((n_heads, dh, dh), np.float32)
     x = rng.normal(size=d).astype(np.float32)
     for T in (16, 64, 256):
@@ -183,6 +183,73 @@ def bench_layer_throughput() -> dict:
     return out
 
 
+def bench_layer_quantized() -> dict:
+    """The M3 payoff: the same layer in float and in int8, one decode step.
+
+    Real geometry (d=1024, 8 heads, d_ff=2816) so the weight stream is large
+    enough to matter. Both layers run the identical maths; only the GEMV changes.
+    """
+    rng = np.random.default_rng(21)
+    d, n_heads, dff = 1024, 8, 2816
+
+    def w(shape):
+        return rng.normal(scale=0.02, size=shape).astype(np.float32)
+
+    args = (w((d, d)), w((d, d)), w((d, d)), w((d, d)), w((dff, d)),
+            w((dff, d)), w((d, dff)), np.ones(d, np.float32), np.ones(d, np.float32))
+    lf = ec.Layer(*args)
+    lf.set_heads(n_heads)
+    lq = ec.Layer(*args)
+    lq.set_heads(n_heads)
+    lq.quantize()
+
+    max_T = 128
+    kvf = np.zeros((max_T, 2, d), np.float32)
+    kvq = np.zeros((max_T, 2, d), np.float32)
+    xf = rng.normal(size=d).astype(np.float32)
+    xq = xf.copy()
+
+    def run(layer, x, kv, T, reps):
+        # Full attention path: stable over many steps, unlike the delta path with
+        # the hard-coded g=0 (which grows without decay). The GEMVs are identical,
+        # so this isolates the kernel difference.
+        kv_len = 0
+        for pos in range(T):
+            x, _, kv_len = layer.forward(x, kv=kv, kv_len=kv_len, max_T=max_T, pos=pos)
+        t0 = time.perf_counter()
+        for r in range(reps):
+            x, _, kv_len = layer.forward(x, kv=kv, kv_len=kv_len, max_T=max_T, pos=T + r)
+        return (time.perf_counter() - t0) / reps, x
+
+    T, reps = 64, 30
+    dt_float, x_float = run(lf, xf, kvf, T, reps)
+    dt_int8, x_int8 = run(lq, xq, kvq, T, reps)
+    lq.dequantize()
+
+    # float weights per token: the seven matrices, 4 bytes each
+    weight_bytes = (4 * d * d + 3 * d * dff) * 4
+    # relative L2 is the meaningful error metric; a max over a residual stream is
+    # dominated by tiny components. Single-scale activation quantisation is lossy
+    # when the activation has outliers, which is why real engines use per-token or
+    # per-group scales. This number says how much that costs.
+    l2 = float(np.linalg.norm(x_int8 - x_float) / (np.linalg.norm(x_float) + 1e-9))
+    mx = float(np.abs(x_int8 - x_float).max() / (np.abs(x_float).max() + 1e-9))
+    return {
+        "d": d, "n_heads": n_heads, "d_ff": dff,
+        "weight_bytes_float": int(weight_bytes),
+        "weight_bytes_int8": int(weight_bytes // 4),
+        "seconds_per_token_float": dt_float,
+        "seconds_per_token_int8": dt_int8,
+        "speedup": dt_float / dt_int8 if dt_int8 else 0.0,
+        "weight_gbs_float": weight_bytes / dt_float / 1e9,
+        "weight_gbs_int8": (weight_bytes / 4) / dt_int8 / 1e9,
+        "rel_l2_error": l2,
+        "max_rel_diff": mx,
+        "note": "int8 weights fit in L3 at this size; the DRAM-bound number is in "
+                "the kernel section of results/machine.json",
+    }
+
+
 def main() -> None:
     RESULTS.mkdir(exist_ok=True)
     tmp = Path(os.environ.get("TMPDIR", "/tmp")) / "ridge_engine_bench"
@@ -199,6 +266,8 @@ def main() -> None:
     policy = bench_pool_policy(tmp)
     print("layer throughput...")
     layer = bench_layer_throughput()
+    print("quantized layer...")
+    qlayer = bench_layer_quantized()
 
     report = {
         "machine": {"block_pool_note": "measured on this host"},
@@ -206,8 +275,10 @@ def main() -> None:
         "spill": spill,
         "pool_policy": policy,
         "layer": layer,
+        "layer_quantized": qlayer,
         "c_selftests": {"mem": ec.c_selftests()[0], "state": ec.c_selftests()[1],
-                        "layer": ec.layer_selftest()},
+                        "layer": ec.layer_selftest(),
+                        "quant": ec.lib().ridge_quant_selftest()},
     }
     out_path = RESULTS / "engine.json"
     out_path.write_text(json.dumps(report, indent=2) + "\n")

@@ -298,3 +298,37 @@ def test_layer_delta_state_matches_reference():
 def test_c_selftests_all_pass():
     assert ec.c_selftests() == (0, 0)
     assert ec.layer_selftest() == 0
+    assert ec.lib().ridge_quant_selftest() == 0
+
+
+# ------------------------------------------------------------------- int8 ----
+
+
+def test_quantized_layer_tracks_float_layer():
+    """A full layer run quantised must stay close to the same layer in float."""
+    rng = np.random.default_rng(12)
+    d, n_heads, dff, max_T = 32, 4, 64, 8
+
+    def w(shape):
+        return rng.normal(scale=0.05, size=shape).astype(np.float32)
+
+    args = (w((d, d)), w((d, d)), w((d, d)), w((d, d)), w((dff, d)),
+            w((dff, d)), w((d, dff)), np.ones(d, np.float32), np.ones(d, np.float32))
+    lf = ec.Layer(*args)
+    lf.set_heads(n_heads)
+    lq = ec.Layer(*args)
+    lq.set_heads(n_heads)
+    lq.quantize()
+
+    x0 = rng.normal(size=d).astype(np.float32)
+    kvf = np.zeros((max_T, 2, d), np.float32)
+    kvq = np.zeros((max_T, 2, d), np.float32)
+    xf, xq = x0.copy(), x0.copy()
+    lf_len = lq_len = 0
+    for pos in range(4):
+        xf, _, lf_len = lf.forward(xf, kv=kvf, kv_len=lf_len, max_T=max_T, pos=pos)
+        xq, _, lq_len = lq.forward(xq, kv=kvq, kv_len=lq_len, max_T=max_T, pos=pos)
+    # int8 with per-row weight scales and one activation scale: a few percent
+    rel = np.abs(xq - xf) / (np.abs(xf) + 1e-3)
+    assert rel.max() < 0.25, rel.max()
+    lq.dequantize()

@@ -187,6 +187,141 @@ static void ternary_pack(ternary_row *r, const uint8_t *codes) {
   }
 }
 
+/* ------------------------------------------------------- int8 gemv (VNNI) */
+
+/*
+ * int8 GEMV: y[i] = s_w[i] * s_x * sum_j w8[i][j] * xq[j].
+ *
+ * Weights are int8 with one scale per row. The activation vector is quantised
+ * once per matvec: xq[j] = round(x[j]/s_x), and stored with a +128 offset as an
+ * unsigned byte so the whole product runs in vpdpbusd (AVX-512 VNNI), which is
+ * unsigned-activation times signed-weight, 64 multiply-accumulates per
+ * instruction.
+ *
+ * The offset is exact and is undone in one place. With au[j] = xq[j] + 128,
+ *     sum_j au[j]*w[j] = sum_j xq[j]*w[j] + 128*sum_j w[j],
+ * so the true integer dot is the instruction's result minus 128*rowsum(w). The
+ * per-row weight sum is precomputed once, so the correction is one subtraction.
+ *
+ * Both operands are 64 contiguous bytes, so one load each feeds a full vpdpbusd
+ * with every lane live. Nothing is broadcast: the activation is 1 byte per
+ * weight, which is the entire point -- 1 byte/weight against 4 for fp32.
+ */
+typedef struct {
+  int8_t *w;      /* [n,k] row-major, signed */
+  int *rowsum;    /* [n] sum of signed weights, for the offset correction */
+  float *scale;   /* [n] row scales */
+  size_t n, k;
+} int8_mat;
+
+/* Quantise x to unsigned-offset bytes au[j] = xq[j]+128, and keep xq signed. */
+static float int8_pack_b(const float *x, size_t k, uint8_t *au, int8_t *xq) {
+  float amax = 0.0f;
+  for (size_t j = 0; j < k; j++) { float v = fabsf(x[j]); if (v > amax) amax = v; }
+  float s = amax > 0.0f ? amax / 127.0f : 1.0f;
+  for (size_t j = 0; j < k; j++) {
+    long q = lrintf(x[j] / s);
+    if (q > 127) q = 127;
+    if (q < -127) q = -127;
+    xq[j] = (int8_t)q;
+    au[j] = (uint8_t)(q + 128);
+  }
+  return s;
+}
+
+/* Reference: the exact signed integer inner product, for verification. */
+static long int8_dot_ref(const int8_t *w, const int8_t *xq, size_t k) {
+  long acc = 0;
+  for (size_t j = 0; j < k; j++) acc += (long)w[j] * (long)xq[j];
+  return acc;
+}
+
+#if defined(__AVX512VNNI__)
+/* One output row: 64 weights per vpdpbusd, offset correction applied once.
+ * Exact integer arithmetic, so the result must match int8_dot_ref bit for bit. */
+static int int8_dot_vnni(const int8_t *row, const uint8_t *au, size_t k,
+                         int rowsum) {
+  __m512i acc = _mm512_setzero_si512();
+  for (size_t j = 0; j < k; j += 64) {
+    __m512i a = _mm512_loadu_si512((const void *)(au + j));
+    __m512i b = _mm512_loadu_si512((const void *)(row + j));
+    acc = _mm512_dpbusd_epi32(acc, a, b);
+  }
+  return _mm512_reduce_add_epi32(acc) - 128 * rowsum;
+}
+#endif
+
+static int has_vnni(void) {
+#if defined(__AVX512VNNI__)
+  return __builtin_cpu_supports("avx512vnni");
+#else
+  return 0;
+#endif
+}
+
+/* Measure an int8 GEMV of shape [N,K]. Returns GFLOPs, GB/s of weight traffic,
+ * and the max |VNNI - reference| error. Call it at two sizes: one that fits in
+ * cache (a compute ceiling) and one that does not (what a real weight stream
+ * sees). The two numbers are very different and only the second is a roofline. */
+static void bench_int8(size_t N, size_t K, int reps, double *out_gflops,
+                       double *out_gbs, double *out_err) {
+  int8_mat m8;
+  m8.n = N; m8.k = K;
+  m8.w = (int8_t *)malloc(N * K);
+  m8.rowsum = (int *)malloc(N * sizeof(int));
+  m8.scale = (float *)malloc(N * sizeof(float));
+  uint8_t *au = (uint8_t *)malloc(K);
+  int8_t *xq = (int8_t *)malloc(K);
+  float *x = (float *)xaligned(K * sizeof(float));
+  for (size_t i = 0; i < K; i++) x[i] = sinf((float)i * 0.001f);
+
+  srand(99);
+  for (size_t i = 0; i < N * K; i++) m8.w[i] = (int8_t)((rand() % 255) - 127);
+  for (size_t i = 0; i < N; i++) {
+    long rs = 0;
+    for (size_t j = 0; j < K; j++) rs += m8.w[i * K + j];
+    m8.rowsum[i] = (int)rs;
+    m8.scale[i] = 1.0f;
+  }
+  int8_pack_b(x, K, au, xq);
+
+  double err = 0;
+#if defined(__AVX512VNNI__)
+  if (has_vnni()) {
+    for (size_t i = 0; i < 8; i++) {
+      long ref = int8_dot_ref(m8.w + i * K, xq, K);
+      long got = (long)int8_dot_vnni(m8.w + i * K, au, K, m8.rowsum[i]);
+      double e = fabs((double)(ref - got));
+      if (e > err) err = e;
+    }
+  }
+#endif
+
+  double best = 0, best_dt = 1e9;
+  for (int r = 0; r < reps; r++) {
+    double t0 = now_s();
+    double acc = 0;
+#if defined(__AVX512VNNI__)
+    if (has_vnni()) {
+      for (size_t i = 0; i < N; i++)
+        acc += (double)int8_dot_vnni(m8.w + i * K, au, K, m8.rowsum[i]) * (double)m8.scale[i];
+    } else
+#endif
+    {
+      for (size_t i = 0; i < N; i++)
+        acc += (double)int8_dot_ref(m8.w + i * K, xq, K) * (double)m8.scale[i];
+    }
+    double dt = now_s() - t0;
+    g_sink += acc;
+    double gfl = (double)N * K * 2.0 / dt / 1e9;
+    if (gfl > best) { best = gfl; best_dt = dt; }
+  }
+  *out_gflops = best;
+  *out_gbs = (double)N * K / best_dt / 1e9;   /* 1 byte per weight */
+  *out_err = err;
+  free(m8.w); free(m8.rowsum); free(m8.scale); free(au); free(xq); free(x);
+}
+
 /* ---------------------------------------------------------------- disk io */
 
 static double disk_direct_bw(const char *path, size_t bytes, int reps) {
@@ -358,6 +493,14 @@ int main(int argc, char **argv) {
     tern_gbs = (double)N * (K / 4.0) / best_dt / 1e9;
   }
 
+  /* int8 gemv, same shape as the ternary one, plus a DRAM-bound size. The small
+   * one fits in L3 and reports a compute ceiling; the large one is the roofline
+   * a real weight stream sees. Only the second one matters for decode. */
+  double int8_gflops = 0, int8_gbs = 0, int8_max_abs_err = 0;
+  double int8_big_gflops = 0, int8_big_gbs = 0, int8_big_err = 0;
+  bench_int8(N, K, reps, &int8_gflops, &int8_gbs, &int8_max_abs_err);
+  bench_int8(16384, 16384, reps, &int8_big_gflops, &int8_big_gbs, &int8_big_err);
+
   /* constant-state recurrence vs KV cache, per token */
   double n_layer = 27, n_head = 32, head_dim = 72, ctx = 8192;
   double state_bytes_per_token = n_layer * n_head * head_dim * head_dim * 4; /* linear-attn state (fixed) */
@@ -376,6 +519,15 @@ int main(int argc, char **argv) {
   printf("  \"ternary_packed_gbs\": %.3f,\n", tern_gbs);
   printf("  \"ternary_ridge_flop_per_byte\": %.2f,\n", tern_gflops / (tern_gbs > 0 ? tern_gbs : 1e-9));
   printf("  \"ternary_max_abs_err\": %.3e,\n", max_err);
+  printf("  \"int8_vnni\": %d,\n", has_vnni());
+  printf("  \"int8_cache_gflops\": %.2f,\n", int8_gflops);
+  printf("  \"int8_cache_gbs\": %.3f,\n", int8_gbs);
+  printf("  \"int8_cache_ridge_flop_per_byte\": %.2f,\n", int8_gflops / (int8_gbs > 0 ? int8_gbs : 1e-9));
+  printf("  \"int8_max_abs_err\": %.3e,\n", int8_max_abs_err);
+  printf("  \"int8_dram_gflops\": %.2f,\n", int8_big_gflops);
+  printf("  \"int8_dram_gbs\": %.3f,\n", int8_big_gbs);
+  printf("  \"int8_dram_ridge_flop_per_byte\": %.2f,\n", int8_big_gflops / (int8_big_gbs > 0 ? int8_big_gbs : 1e-9));
+  printf("  \"int8_dram_max_abs_err\": %.3e,\n", int8_big_err);
   printf("  \"linear_state_bytes_per_token\": %.0f,\n", state_bytes_per_token);
   printf("  \"kv_bytes_per_token\": %.0f,\n", kv_bytes_per_token);
   printf("  \"kv_bytes_at_ctx8192\": %.0f\n", kv_at_ctx);

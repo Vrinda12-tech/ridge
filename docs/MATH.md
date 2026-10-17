@@ -446,3 +446,55 @@ and one that does.
 So the salvageable part of the plan is the tiering *idea*, re-founded on the
 budget arithmetic and the acceptance identity; the part that has to go is the SSD
 in the token path and the 33B Architect as a live tier on this hardware.
+
+---
+
+## 9. Kernel choice is a latency question, not a size question
+
+The design started with 2-bit ternary weights on the reasoning that fewer bits
+means fewer bytes means less time. The kernel measurement contradicts that, and
+the derivation says why.
+
+A mat-vec row of $k$ weights, one dot product, takes on the order of $k$
+dependent operations when the kernel is a serial chain, or $k/w$ when it is $w$
+independent lanes wide. So
+
+$$
+t_{\text{row}} \;\approx\; \frac{k}{\mathrm{IPC} \cdot w}
+\quad\text{plus a fixed latency per step.}
+$$
+
+For the **bit-sliced ternary** kernel the steps are `mask_add`/`mask_sub` on a
+single accumulator: the chain is $k/16$ masked adds, each dependent on the last,
+so the row time is bound by the add latency, not the throughput. Measured: 0.112 ns
+per weight.
+
+For the **int8 VNNI** kernel each `vpdpbusd` is independent of the next and does
+64 multiply-accumulates: the row time is bound by the load of the next 64 bytes,
+which the out-of-order engine hides behind the previous multiply. Measured:
+0.035 ns per weight, at four times the bytes.
+
+What matters for decode is the ratio of the times, not the bytes:
+
+$$
+\frac{t_{\text{tern}}}{t_{\text{int8}}} = \frac{0.112}{0.035} \approx 3.2 .
+$$
+
+So int8 wins on decode despite moving four times the data, because decode at batch
+1 is **latency-bound, not bandwidth-bound**, on this machine -- the weight stream
+is small enough that the chain, not the bus, is the limit. This is the same
+observation as §1 (the machine is a bandwidth problem) with the roles swapped: it
+is a bandwidth problem *once the kernel is wide enough to be bandwidth-bound*, and
+ternary is not.
+
+**Consequence.** The engine ships int8. The ternary kernel stays as a measurement
+and a comparison, not as the fast path. The decision is written down because the
+intuition ("2-bit is fastest") is strong and wrong, and because the same test must
+be rerun on any machine before trusting the choice -- a machine with a slower bus
+and a wider integer unit could flip it back.
+
+The int8 error is separate and controlled: weights are quantised per row with a
+scale $s_w$, activations with one scale $s_x$, so the relative error per output is
+$O(2^{-b})$ for $b$ bits. At 8 bits that is a few percent, measured 2.59% relative
+L2 over a full layer. The activation offset ($+128$, undone as $128\sum_j w_j$)
+is exact and does not contribute to the error.

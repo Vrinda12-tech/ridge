@@ -116,11 +116,44 @@ def main() -> None:
              "where the attention term overtakes the fixed weight cost, and it "
              "moves with d_ff/d.")
     L.append("")
-    L.append("## 5. Self-tests")
+    L.append("## 5. The kernel choice: why int8, not ternary (M3)")
+    L.append("")
+    q = d.get("layer_quantized")
+    if q:
+        L.append(f"Same layer, d={q['d']}, {q['n_heads']} heads, d_ff={q['d_ff']}, "
+                 "run twice: once with the float GEMV and once with the int8 VNNI "
+                 "GEMV. Only the GEMV changes.")
+        L.append("")
+        L.append("| weights | bytes | ms/token | weight GB/s |")
+        L.append("|---|---:|---:|---:|")
+        L.append(f"| float32 | {mb(q['weight_bytes_float'])} | "
+                 f"{q['seconds_per_token_float'] * 1000:.2f} | {q['weight_gbs_float']:.2f} |")
+        L.append(f"| int8 | {mb(q['weight_bytes_int8'])} | "
+                 f"{q['seconds_per_token_int8'] * 1000:.2f} | {q['weight_gbs_int8']:.2f} |")
+        L.append("")
+        L.append(f"**{q['speedup']:.1f}x faster**, at a relative L2 error of "
+                 f"{q['rel_l2_error'] * 100:.2f}% (single-scale activation "
+                 "quantisation; per-group scales would cut this). The float layer "
+                 f"runs at {q['weight_gbs_float']:.1f} GB/s, below the "
+                 "read roof, because its GEMV is a scalar loop. The int8 layer "
+                 f"reaches {q['weight_gbs_int8']:.1f} GB/s, which is above the "
+                 "DRAM read roof -- the int8 weights fit in L3 at this size, so "
+                 "this is the compute-bound regime, not the memory-bound one.")
+        L.append("")
+    L.append("The kernel-level measurement (results/MEASUREMENTS.md) is the general "
+             "result: **int8 VNNI processes a weight in 0.035 ns against ternary's "
+             "0.112 ns, 3.2x faster, while moving four times the bytes.** Fewer bits "
+             "does not mean less time. Ternary is latency-bound on its serial "
+             "masked-add chain; int8 VNNI has independent accumulator lanes and 64 "
+             "multiply-accumulates per instruction. The engine therefore ships int8. "
+             "The int8 path matches a scalar integer dot exactly (max abs error 0).")
+    L.append("")
+    L.append("## 6. Self-tests")
     L.append("")
     c = d["c_selftests"]
     L.append(f"`ridge_mem_selftest`={c['mem']}, `ridge_state_selftest`={c['state']}, "
-             f"`ridge_layer_selftest`={c['layer']} (0 = pass).")
+             f"`ridge_layer_selftest`={c['layer']}, `ridge_quant_selftest`="
+             f"{c.get('quant')} (0 = pass).")
     L.append("")
     L.append("The Python suite checks the same maths against an independent NumPy "
              "reference: `tests/test_engine.py`.")

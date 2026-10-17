@@ -8,27 +8,36 @@
   },
   "kernel": {
     "cpu_avx512": 1,
-    "roof_read_gbs": 32.65,
-    "roof_copy_gbs": 21.579,
-    "roof_fma_gflops": 108.9,
-    "ridge_flop_per_byte": 3.336,
+    "roof_read_gbs": 33.399,
+    "roof_copy_gbs": 21.737,
+    "roof_fma_gflops": 109.1,
+    "ridge_flop_per_byte": 3.265,
     "disk_direct_gbs": 0.177,
-    "disk_buffered_gbs": 10.85,
-    "ternary_gflops": 17.86,
-    "ternary_packed_gbs": 2.232,
+    "disk_buffered_gbs": 15.765,
+    "ternary_gflops": 17.92,
+    "ternary_packed_gbs": 2.24,
     "ternary_ridge_flop_per_byte": 8.0,
     "ternary_max_abs_err": 1.549e-05,
+    "int8_vnni": 4,
+    "int8_cache_gflops": 119.77,
+    "int8_cache_gbs": 59.886,
+    "int8_cache_ridge_flop_per_byte": 2.0,
+    "int8_max_abs_err": 0.0,
+    "int8_dram_gflops": 57.42,
+    "int8_dram_gbs": 28.712,
+    "int8_dram_ridge_flop_per_byte": 2.0,
+    "int8_dram_max_abs_err": 0.0,
     "linear_state_bytes_per_token": 17915904,
     "kv_bytes_per_token": 248832,
     "kv_bytes_at_ctx8192": 2038431744
   },
   "machine": {
-    "read_gbs": 32.65,
-    "copy_gbs": 21.579,
-    "fma_gflops": 108.9,
+    "read_gbs": 33.399,
+    "copy_gbs": 21.737,
+    "fma_gflops": 109.1,
     "disk_direct_gbs": 0.177,
-    "disk_buffered_gbs": 10.85,
-    "ridge_flop_per_byte": 3.335,
+    "disk_buffered_gbs": 15.765,
+    "ridge_flop_per_byte": 3.267,
     "ram_budget_gb": 8.0
   },
   "hub_models": [
@@ -37,9 +46,6 @@
       "total_weight_gb": 15.232,
       "config": {
         "model_type": "qwen2",
-        "architectures": [
-          "Qwen2ForCausalLM"
-        ],
         "num_hidden_layers": 28,
         "hidden_size": 3584,
         "num_attention_heads": 28,
@@ -51,16 +57,13 @@
         "torch_dtype": "bfloat16"
       },
       "license": "apache-2.0",
-      "downloads": 1589786
+      "downloads": 1536463
     },
     {
       "repo": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
       "total_weight_gb": 3.087,
       "config": {
         "model_type": "qwen2",
-        "architectures": [
-          "Qwen2ForCausalLM"
-        ],
         "num_hidden_layers": 28,
         "hidden_size": 1536,
         "num_attention_heads": 12,
@@ -72,16 +75,13 @@
         "torch_dtype": "bfloat16"
       },
       "license": "apache-2.0",
-      "downloads": 463869
+      "downloads": 445144
     },
     {
       "repo": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
       "total_weight_gb": 2.2,
       "config": {
         "model_type": "llama",
-        "architectures": [
-          "LlamaForCausalLM"
-        ],
         "num_hidden_layers": 22,
         "hidden_size": 2048,
         "num_attention_heads": 32,
@@ -93,16 +93,13 @@
         "torch_dtype": "bfloat16"
       },
       "license": "apache-2.0",
-      "downloads": 1131294
+      "downloads": 1067000
     },
     {
       "repo": "Qwen/Qwen3-32B",
       "total_weight_gb": 65.527,
       "config": {
         "model_type": "qwen3",
-        "architectures": [
-          "Qwen3ForCausalLM"
-        ],
         "num_hidden_layers": 64,
         "hidden_size": 5120,
         "num_attention_heads": 64,
@@ -115,16 +112,13 @@
         "torch_dtype": "bfloat16"
       },
       "license": "apache-2.0",
-      "downloads": 3235453
+      "downloads": 3041641
     },
     {
       "repo": "deepseek-ai/deepseek-coder-33b-instruct",
       "total_weight_gb": 133.37,
       "config": {
         "model_type": "llama",
-        "architectures": [
-          "LlamaForCausalLM"
-        ],
         "num_hidden_layers": 62,
         "hidden_size": 7168,
         "num_attention_heads": 56,
@@ -136,16 +130,13 @@
         "torch_dtype": "bfloat16"
       },
       "license": "other",
-      "downloads": 2836
+      "downloads": 4772
     },
     {
       "repo": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
       "total_weight_gb": 98.247,
       "config": {
         "model_type": "kimi_linear",
-        "architectures": [
-          "KimiLinearForCausalLM"
-        ],
         "num_hidden_layers": 27,
         "hidden_size": 2304,
         "num_attention_heads": 32,
@@ -158,16 +149,13 @@
         "hidden_act": "silu"
       },
       "license": "mit",
-      "downloads": 202954
+      "downloads": 184775
     },
     {
       "repo": "microsoft/bitnet-b1.58-2B-4T",
       "total_weight_gb": 1.179,
       "config": {
         "model_type": "bitnet",
-        "architectures": [
-          "BitNetForCausalLM"
-        ],
         "num_hidden_layers": 30,
         "hidden_size": 2560,
         "num_attention_heads": 20,
@@ -185,14 +173,14 @@
         }
       },
       "license": "mit",
-      "downloads": 18677
+      "downloads": 17727
     },
     {
       "repo": "BlinkDL/rwkv7-g1",
       "total_weight_gb": 56.842,
       "config": null,
       "license": "apache-2.0",
-      "downloads": 34450
+      "downloads": 34808
     }
   ],
   "specs": {
@@ -360,8 +348,8 @@
       "flops_per_token_gflop": 15.231,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.466494,
-      "tokens_per_s": 2.144,
+      "s_per_token": 0.456032,
+      "tokens_per_s": 2.193,
       "streamed_from_ssd_tokens_per_s": 0.011621,
       "key": "qwen2.5-coder-7b"
     },
@@ -374,8 +362,8 @@
       "flops_per_token_gflop": 15.231,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.852798,
-      "tokens_per_s": 1.173,
+      "s_per_token": 0.849942,
+      "tokens_per_s": 1.177,
       "streamed_from_ssd_tokens_per_s": 0.046484,
       "key": "qwen2.5-coder-7b"
     },
@@ -388,8 +376,8 @@
       "flops_per_token_gflop": 15.231,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 0.852798,
-      "tokens_per_s": 1.173,
+      "s_per_token": 0.849942,
+      "tokens_per_s": 1.177,
       "streamed_from_ssd_tokens_per_s": 0.092968,
       "key": "qwen2.5-coder-7b"
     },
@@ -402,8 +390,8 @@
       "flops_per_token_gflop": 3.554,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.108854,
-      "tokens_per_s": 9.187,
+      "s_per_token": 0.106413,
+      "tokens_per_s": 9.397,
       "streamed_from_ssd_tokens_per_s": 0.049802,
       "key": "qwen2.5-coder-1.5b"
     },
@@ -416,8 +404,8 @@
       "flops_per_token_gflop": 3.554,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.198995,
-      "tokens_per_s": 5.025,
+      "s_per_token": 0.198329,
+      "tokens_per_s": 5.042,
       "streamed_from_ssd_tokens_per_s": 0.199209,
       "key": "qwen2.5-coder-1.5b"
     },
@@ -430,8 +418,8 @@
       "flops_per_token_gflop": 3.554,
       "intensity_flop_per_byte": 7.999,
       "bound": "compute",
-      "s_per_token": 0.198995,
-      "tokens_per_s": 5.025,
+      "s_per_token": 0.198329,
+      "tokens_per_s": 5.042,
       "streamed_from_ssd_tokens_per_s": 0.398418,
       "key": "qwen2.5-coder-1.5b"
     },
@@ -444,8 +432,8 @@
       "flops_per_token_gflop": 2.2,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.067385,
-      "tokens_per_s": 14.84,
+      "s_per_token": 0.065874,
+      "tokens_per_s": 15.181,
       "streamed_from_ssd_tokens_per_s": 0.080451,
       "key": "tinyllama-1.1b"
     },
@@ -458,8 +446,8 @@
       "flops_per_token_gflop": 2.2,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.123185,
-      "tokens_per_s": 8.118,
+      "s_per_token": 0.122773,
+      "tokens_per_s": 8.145,
       "streamed_from_ssd_tokens_per_s": 0.321805,
       "key": "tinyllama-1.1b"
     },
@@ -472,8 +460,8 @@
       "flops_per_token_gflop": 2.2,
       "intensity_flop_per_byte": 7.999,
       "bound": "compute",
-      "s_per_token": 0.123185,
-      "tokens_per_s": 8.118,
+      "s_per_token": 0.122773,
+      "tokens_per_s": 8.145,
       "streamed_from_ssd_tokens_per_s": 0.643609,
       "key": "tinyllama-1.1b"
     },
@@ -486,8 +474,8 @@
       "flops_per_token_gflop": 66.686,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 2.042457,
-      "tokens_per_s": 0.49,
+      "s_per_token": 1.996653,
+      "tokens_per_s": 0.501,
       "streamed_from_ssd_tokens_per_s": 0.002654,
       "key": "deepseek-coder-33b"
     },
@@ -500,8 +488,8 @@
       "flops_per_token_gflop": 66.686,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 3.733817,
-      "tokens_per_s": 0.268,
+      "s_per_token": 3.721315,
+      "tokens_per_s": 0.269,
       "streamed_from_ssd_tokens_per_s": 0.010617,
       "key": "deepseek-coder-33b"
     },
@@ -514,8 +502,8 @@
       "flops_per_token_gflop": 66.686,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 3.733817,
-      "tokens_per_s": 0.268,
+      "s_per_token": 3.721315,
+      "tokens_per_s": 0.269,
       "streamed_from_ssd_tokens_per_s": 0.021234,
       "key": "deepseek-coder-33b"
     },
@@ -528,8 +516,8 @@
       "flops_per_token_gflop": 6.288,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.192581,
-      "tokens_per_s": 5.193,
+      "s_per_token": 0.188262,
+      "tokens_per_s": 5.312,
       "streamed_from_ssd_tokens_per_s": 0.02815,
       "key": "kimi-linear-48b-a3b"
     },
@@ -542,8 +530,8 @@
       "flops_per_token_gflop": 6.288,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.352059,
-      "tokens_per_s": 2.84,
+      "s_per_token": 0.35088,
+      "tokens_per_s": 2.85,
       "streamed_from_ssd_tokens_per_s": 0.112599,
       "key": "kimi-linear-48b-a3b"
     },
@@ -556,8 +544,8 @@
       "flops_per_token_gflop": 6.288,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 0.352059,
-      "tokens_per_s": 2.84,
+      "s_per_token": 0.35088,
+      "tokens_per_s": 2.85,
       "streamed_from_ssd_tokens_per_s": 0.225199,
       "key": "kimi-linear-48b-a3b"
     },
@@ -570,8 +558,8 @@
       "flops_per_token_gflop": 65.524,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 2.006875,
-      "tokens_per_s": 0.498,
+      "s_per_token": 1.961869,
+      "tokens_per_s": 0.51,
       "streamed_from_ssd_tokens_per_s": 0.002701,
       "key": "qwen3-32b"
     },
@@ -584,7 +572,7 @@
       "flops_per_token_gflop": 65.524,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 3.668768,
+      "s_per_token": 3.656485,
       "tokens_per_s": 0.273,
       "streamed_from_ssd_tokens_per_s": 0.010805,
       "key": "qwen3-32b"
@@ -598,7 +586,7 @@
       "flops_per_token_gflop": 65.524,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 3.668768,
+      "s_per_token": 3.656485,
       "tokens_per_s": 0.273,
       "streamed_from_ssd_tokens_per_s": 0.02161,
       "key": "qwen3-32b"
@@ -612,8 +600,8 @@
       "flops_per_token_gflop": 5.482,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.167896,
-      "tokens_per_s": 5.956,
+      "s_per_token": 0.164131,
+      "tokens_per_s": 6.093,
       "streamed_from_ssd_tokens_per_s": 0.032289,
       "key": "bitnet-b1.58-2b"
     },
@@ -626,8 +614,8 @@
       "flops_per_token_gflop": 5.482,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.306928,
-      "tokens_per_s": 3.258,
+      "s_per_token": 0.305901,
+      "tokens_per_s": 3.269,
       "streamed_from_ssd_tokens_per_s": 0.129156,
       "key": "bitnet-b1.58-2b"
     },
@@ -640,8 +628,8 @@
       "flops_per_token_gflop": 5.482,
       "intensity_flop_per_byte": 7.999,
       "bound": "compute",
-      "s_per_token": 0.306928,
-      "tokens_per_s": 3.258,
+      "s_per_token": 0.305901,
+      "tokens_per_s": 3.269,
       "streamed_from_ssd_tokens_per_s": 0.258312,
       "key": "bitnet-b1.58-2b"
     },
@@ -654,8 +642,8 @@
       "flops_per_token_gflop": 38.348,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 1.174518,
-      "tokens_per_s": 0.851,
+      "s_per_token": 1.148178,
+      "tokens_per_s": 0.871,
       "streamed_from_ssd_tokens_per_s": 0.004616,
       "key": "ternary-bonsai-27b"
     },
@@ -668,8 +656,8 @@
       "flops_per_token_gflop": 38.348,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 2.14713,
-      "tokens_per_s": 0.466,
+      "s_per_token": 2.139941,
+      "tokens_per_s": 0.467,
       "streamed_from_ssd_tokens_per_s": 0.018463,
       "key": "ternary-bonsai-27b"
     },
@@ -682,8 +670,8 @@
       "flops_per_token_gflop": 38.348,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 2.14713,
-      "tokens_per_s": 0.466,
+      "s_per_token": 2.139941,
+      "tokens_per_s": 0.467,
       "streamed_from_ssd_tokens_per_s": 0.036925,
       "key": "ternary-bonsai-27b"
     },
@@ -696,8 +684,8 @@
       "flops_per_token_gflop": 3.356,
       "intensity_flop_per_byte": 1.0,
       "bound": "memory",
-      "s_per_token": 0.102776,
-      "tokens_per_s": 9.73,
+      "s_per_token": 0.100471,
+      "tokens_per_s": 9.953,
       "streamed_from_ssd_tokens_per_s": 0.052747,
       "key": "rwkv7-1.5b"
     },
@@ -710,8 +698,8 @@
       "flops_per_token_gflop": 3.356,
       "intensity_flop_per_byte": 4.0,
       "bound": "compute",
-      "s_per_token": 0.187886,
-      "tokens_per_s": 5.322,
+      "s_per_token": 0.187257,
+      "tokens_per_s": 5.34,
       "streamed_from_ssd_tokens_per_s": 0.210988,
       "key": "rwkv7-1.5b"
     },
@@ -724,8 +712,8 @@
       "flops_per_token_gflop": 3.356,
       "intensity_flop_per_byte": 8.0,
       "bound": "compute",
-      "s_per_token": 0.187886,
-      "tokens_per_s": 5.322,
+      "s_per_token": 0.187257,
+      "tokens_per_s": 5.34,
       "streamed_from_ssd_tokens_per_s": 0.421976,
       "key": "rwkv7-1.5b"
     }
@@ -753,7 +741,7 @@
       "ram_gb": 8.0,
       "fits": false,
       "draft_relative_cost": 0.2284,
-      "target_tokens_per_s": 0.268
+      "target_tokens_per_s": 0.269
     },
     "three_tier_ssd_ridge_32b": {
       "target": "Qwen/Qwen3-32B",
@@ -777,7 +765,7 @@
       "ram_gb": 8.0,
       "fits": true,
       "draft_relative_cost": 0.1444,
-      "target_tokens_per_s": 1.173
+      "target_tokens_per_s": 1.177
     },
     "resident_kimi_linear_q4": {
       "target": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
@@ -789,7 +777,7 @@
       "ram_gb": 8.0,
       "fits": true,
       "draft_relative_cost": 0.3499,
-      "target_tokens_per_s": 2.84
+      "target_tokens_per_s": 2.85
     },
     "resident_ternary_27b_q2": {
       "target": "prism-ml/Ternary-Bonsai-2-27B",
@@ -801,7 +789,7 @@
       "ram_gb": 8.0,
       "fits": true,
       "draft_relative_cost": 0.0574,
-      "target_tokens_per_s": 0.466
+      "target_tokens_per_s": 0.467
     }
   },
   "spec_decode": {

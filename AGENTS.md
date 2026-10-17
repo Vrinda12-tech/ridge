@@ -35,6 +35,7 @@ ridge/engine_core.py  ctypes binding + build for engine/. NumPy arrays in as poi
 engine/ridge_mem.{h,c}    logical-block memory manager: mmap pool, block table, spill.
 engine/ridge_state.{h,c}  full attention + gated delta rule (constant state).
 engine/ridge_layer.{h,c}  one pre-norm transformer layer in C.
+engine/ridge_quant.{h,c}  int8 quantisation + AVX-512 VNNI GEMV (the fast path).
 docs/DEVELOPERS.md        what it does/does not, build, test, where it fails, how to extend.
 docs/ENGINE.md            the engine plan: inputs/outputs, design, milestones, results.
 bench/run.py              measure -> results/machine.json (the source of truth).

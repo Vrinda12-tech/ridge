@@ -1,15 +1,12 @@
 [
   {
     "repo": "Qwen/Qwen2.5-Coder-7B-Instruct",
-    "downloads": 1589786,
-    "likes": 830,
+    "downloads": 1536463,
+    "likes": 831,
     "gated": false,
     "license": "apache-2.0",
     "config": {
       "model_type": "qwen2",
-      "architectures": [
-        "Qwen2ForCausalLM"
-      ],
       "num_hidden_layers": 28,
       "hidden_size": 3584,
       "num_attention_heads": 28,
@@ -42,15 +39,12 @@
   },
   {
     "repo": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
-    "downloads": 463869,
-    "likes": 158,
+    "downloads": 445144,
+    "likes": 160,
     "gated": false,
     "license": "apache-2.0",
     "config": {
       "model_type": "qwen2",
-      "architectures": [
-        "Qwen2ForCausalLM"
-      ],
       "num_hidden_layers": 28,
       "hidden_size": 1536,
       "num_attention_heads": 12,
@@ -71,15 +65,12 @@
   },
   {
     "repo": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-    "downloads": 1131294,
-    "likes": 1859,
+    "downloads": 1067000,
+    "likes": 1866,
     "gated": false,
     "license": "apache-2.0",
     "config": {
       "model_type": "llama",
-      "architectures": [
-        "LlamaForCausalLM"
-      ],
       "num_hidden_layers": 22,
       "hidden_size": 2048,
       "num_attention_heads": 32,
@@ -100,15 +91,12 @@
   },
   {
     "repo": "Qwen/Qwen3-32B",
-    "downloads": 3235453,
+    "downloads": 3041641,
     "likes": 768,
     "gated": false,
     "license": "apache-2.0",
     "config": {
       "model_type": "qwen3",
-      "architectures": [
-        "Qwen3ForCausalLM"
-      ],
       "num_hidden_layers": 64,
       "hidden_size": 5120,
       "num_attention_heads": 64,
@@ -194,15 +182,12 @@
   },
   {
     "repo": "deepseek-ai/deepseek-coder-33b-instruct",
-    "downloads": 2836,
+    "downloads": 4772,
     "likes": 603,
     "gated": false,
     "license": "other",
     "config": {
       "model_type": "llama",
-      "architectures": [
-        "LlamaForCausalLM"
-      ],
       "num_hidden_layers": 62,
       "hidden_size": 7168,
       "num_attention_heads": 56,
@@ -275,15 +260,12 @@
   },
   {
     "repo": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
-    "downloads": 202954,
+    "downloads": 184775,
     "likes": 609,
     "gated": false,
     "license": "mit",
     "config": {
       "model_type": "kimi_linear",
-      "architectures": [
-        "KimiLinearForCausalLM"
-      ],
       "num_hidden_layers": 27,
       "hidden_size": 2304,
       "num_attention_heads": 32,
@@ -381,15 +363,12 @@
   },
   {
     "repo": "microsoft/bitnet-b1.58-2B-4T",
-    "downloads": 18677,
-    "likes": 1503,
+    "downloads": 17727,
+    "likes": 1505,
     "gated": false,
     "license": "mit",
     "config": {
       "model_type": "bitnet",
-      "architectures": [
-        "BitNetForCausalLM"
-      ],
       "num_hidden_layers": 30,
       "hidden_size": 2560,
       "num_attention_heads": 20,
@@ -416,8 +395,8 @@
   },
   {
     "repo": "BlinkDL/rwkv7-g1",
-    "downloads": 34450,
-    "likes": 234,
+    "downloads": 34808,
+    "likes": 235,
     "gated": false,
     "license": "apache-2.0",
     "config_error": "HTTP Error 404: Not Found",

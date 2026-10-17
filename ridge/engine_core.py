@@ -22,6 +22,7 @@ LIB_PATH = ENGINE / "librridge_engine.so"
 _SOURCES = [
     ENGINE / "ridge_mem.c",
     ENGINE / "ridge_state.c",
+    ENGINE / "ridge_quant.c",
     ENGINE / "ridge_layer.c",
 ]
 
@@ -111,6 +112,23 @@ def _declare(L: ctypes.CDLL) -> None:
     L.ridge_layer_scratch_bytes.restype = ctypes.c_size_t
     L.ridge_layer_scratch_bytes.argtypes = [P(_Layer)]
     L.ridge_layer_selftest.restype = ctypes.c_int
+    L.ridge_layer_quantize.restype = ctypes.c_int
+    L.ridge_layer_quantize.argtypes = [P(_Layer)]
+    L.ridge_layer_dequantize.argtypes = [P(_Layer)]
+
+    L.ridge_quant_selftest.restype = ctypes.c_int
+    L.ridge_quant_has_vnni.restype = ctypes.c_int
+
+
+class _QMat(ctypes.Structure):
+    _fields_ = [
+        ("w", ctypes.POINTER(ctypes.c_int8)),
+        ("rowsum", ctypes.POINTER(ctypes.c_int)),
+        ("scale", ctypes.POINTER(ctypes.c_float)),
+        ("n", ctypes.c_int),
+        ("k", ctypes.c_int),
+        ("k_pad", ctypes.c_int),
+    ]
 
 
 class _Layer(ctypes.Structure):
@@ -129,6 +147,9 @@ class _Layer(ctypes.Structure):
         ("attn_norm", ctypes.POINTER(ctypes.c_float)),
         ("ffn_norm", ctypes.POINTER(ctypes.c_float)),
         ("rope_theta", ctypes.c_float),
+        ("q_wq", _QMat), ("q_wk", _QMat), ("q_wv", _QMat), ("q_wo", _QMat),
+        ("q_gate", _QMat), ("q_up", _QMat), ("q_down", _QMat),
+        ("quantized", ctypes.c_int),
     ]
 
 
@@ -165,14 +186,31 @@ class Layer:
             raise ValueError("d must be divisible by n_heads")
         self.n_heads = n_heads
         self.d_head = self.d // n_heads
+        self._s = None   # geometry changed; rebuild the struct on next use
 
     def _struct(self):
-        return _Layer(
-            self.d, self.n_heads, self.d_head, self.d_ff,
-            _fp(self.wq), _fp(self.wk), _fp(self.wv), _fp(self.wo),
-            _fp(self.w_gate), _fp(self.w_up), _fp(self.w_down),
-            _fp(self.attn_norm), _fp(self.ffn_norm), ctypes.c_float(self.rope_theta),
-        )
+        # Keep one struct alive for the object's lifetime: ridge_layer_quantize
+        # writes the quantised matrices into it, so a fresh struct per call would
+        # throw the quantisation away and leak.
+        if self._s is None:
+            self._s = _Layer(
+                self.d, self.n_heads, self.d_head, self.d_ff,
+                _fp(self.wq), _fp(self.wk), _fp(self.wv), _fp(self.wo),
+                _fp(self.w_gate), _fp(self.w_up), _fp(self.w_down),
+                _fp(self.attn_norm), _fp(self.ffn_norm),
+                ctypes.c_float(self.rope_theta),
+            )
+        return self._s
+
+    def quantize(self) -> None:
+        """Quantise the weights to int8; the forward pass then uses the VNNI GEMV."""
+        rc = lib().ridge_layer_quantize(ctypes.byref(self._struct()))
+        if rc != 0:
+            raise RuntimeError(f"ridge_layer_quantize rc={rc}")
+
+    def dequantize(self) -> None:
+        if self._s is not None:
+            lib().ridge_layer_dequantize(ctypes.byref(self._s))
 
     def scratch_bytes(self) -> int:
         s = self._struct()

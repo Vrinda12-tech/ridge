@@ -23,10 +23,10 @@
     "block_bytes": 1048576,
     "pool_bytes": 67108864,
     "logical_blocks": 4096,
-    "fill_seconds": 14.59210093999718,
-    "recall_seconds": 2.266390180997405,
-    "spill_write_mbs": 294.3350867473392,
-    "recall_read_mbs": 1895.0696715910797
+    "fill_seconds": 13.653556531000504,
+    "recall_seconds": 2.553613399999449,
+    "spill_write_mbs": 314.5676576098135,
+    "recall_read_mbs": 1681.9175901884469
   },
   "pool_policy": {
     "working_set_blocks": 256,
@@ -72,35 +72,51 @@
     "full_attention": [
       {
         "T": 16,
-        "seconds_per_token": 0.011106561300039175
+        "seconds_per_token": 0.01101281730007031
       },
       {
         "T": 64,
-        "seconds_per_token": 0.011146748250030213
+        "seconds_per_token": 0.011186541249844594
       },
       {
         "T": 256,
-        "seconds_per_token": 0.011434127250140591
+        "seconds_per_token": 0.011560011750043486
       }
     ],
     "delta_state": [
       {
         "T": 16,
-        "seconds_per_token": 0.011082252300002437
+        "seconds_per_token": 0.011012829300125305
       },
       {
         "T": 64,
-        "seconds_per_token": 0.011086022249946837
+        "seconds_per_token": 0.011086090299977513
       },
       {
         "T": 256,
-        "seconds_per_token": 0.011079625750062405
+        "seconds_per_token": 0.011000695799884852
       }
     ]
+  },
+  "layer_quantized": {
+    "d": 1024,
+    "n_heads": 8,
+    "d_ff": 2816,
+    "weight_bytes_float": 51380224,
+    "weight_bytes_int8": 12845056,
+    "seconds_per_token_float": 0.011167007100084447,
+    "seconds_per_token_int8": 0.0003926956665964099,
+    "speedup": 28.4367973725599,
+    "weight_gbs_float": 4.601073818571447,
+    "weight_gbs_int8": 32.70995096872666,
+    "rel_l2_error": 0.02592303231358528,
+    "max_rel_diff": 0.030981717631220818,
+    "note": "int8 weights fit in L3 at this size; the DRAM-bound number is in the kernel section of results/machine.json"
   },
   "c_selftests": {
     "mem": 0,
     "state": 0,
-    "layer": 0
+    "layer": 0,
+    "quant": 0
   }
 }

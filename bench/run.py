@@ -84,7 +84,7 @@ def machine_from_kernel(k: dict, ram_bytes: float) -> Machine:
         read_gbs=k["roof_read_gbs"],
         copy_gbs=k["roof_copy_gbs"],
         fma_gflops=k["roof_fma_gflops"],
-        compute_gflops=k["ternary_gflops"],
+        compute_gflops=k.get("int8_dram_gflops", k["ternary_gflops"]),
         disk_direct_gbs=k["disk_direct_gbs"],
         disk_buffered_gbs=k["disk_buffered_gbs"],
         ram_bytes=ram_bytes,

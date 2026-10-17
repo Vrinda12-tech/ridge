@@ -28,6 +28,17 @@ def main() -> int:
     out.append(f"| fp32 FMA peak | {m['fma_gflops']:.1f} GFLOP/s |")
     out.append(f"| bit-sliced ternary mat-vec | {k['ternary_gflops']:.2f} GFLOP/s |")
     out.append(f"| ternary packed stream | {k['ternary_packed_gbs']:.2f} GB/s |")
+    if "int8_cache_gflops" in k:
+        out.append(f"| int8 VNNI mat-vec (L3-resident) | {k['int8_cache_gflops']:.2f} GFLOP/s |")
+        out.append(f"| int8 VNNI mat-vec (DRAM-bound) | {k['int8_dram_gflops']:.2f} GFLOP/s |")
+        out.append(f"| int8 weight stream (DRAM-bound) | {k['int8_dram_gbs']:.2f} GB/s |")
+        out.append(f"| int8 VNNI max abs error vs reference | {k['int8_max_abs_err']:.2e} (exact) |")
+        # time to process one weight = 2 flops / rate. This is the number that
+        # decides which kernel to use; fewer bits does not mean less time.
+        ns_tern = 2.0 / k['ternary_gflops'] if k['ternary_gflops'] else 0
+        ns_i8 = 2.0 / k['int8_dram_gflops'] if k['int8_dram_gflops'] else 0
+        out.append(f"| time per weight: ternary / int8 | {ns_tern:.3f} / {ns_i8:.3f} ns "
+                   f"({ns_tern / ns_i8:.1f}x) |")
     out.append(f"| fp32 FMA ridge | {m['ridge_flop_per_byte']:.2f} flop/byte |")
     out.append(f"| ternary ridge | {k['ternary_ridge_flop_per_byte']:.2f} flop/byte |")
     out.append(f"| NVMe O_DIRECT read | {m['disk_direct_gbs']:.3f} GB/s |")

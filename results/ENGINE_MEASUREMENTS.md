@@ -21,10 +21,10 @@ Blocks of 1 MB, a pool of 67 MB, 4096 logical blocks (so the pool is a small cac
 
 | operation | throughput |
 |---|---:|
-| fill (write all blocks, evicting as we go) | 294 MB/s |
-| recall (read all blocks back from the spill file) | 1,895 MB/s |
+| fill (write all blocks, evicting as we go) | 315 MB/s |
+| recall (read all blocks back from the spill file) | 1,682 MB/s |
 
-Recall runs at 1,895 MB/s because the spill file was just written and is entirely in the page cache. That is the best case, and it is the case that matters: a block is recalled soon after it is spilled. Once the file exceeds available RAM the reads fall to device speed, which `results/machine.json` measures separately.
+Recall runs at 1,682 MB/s because the spill file was just written and is entirely in the page cache. That is the best case, and it is the case that matters: a block is recalled soon after it is spilled. Once the file exceeds available RAM the reads fall to device speed, which `results/machine.json` measures separately.
 
 ## 3. Pool policy: the predicted model is wrong, and here is why
 
@@ -48,15 +48,28 @@ Geometry: d=1024, 8 heads, d_ff=2816. One decode step, in C, including attention
 
 | T | full attention | delta state |
 |---:|---:|---:|
-| 16 | 11.11 ms | 11.08 ms |
-| 64 | 11.15 ms | 11.09 ms |
-| 256 | 11.43 ms | 11.08 ms |
+| 16 | 11.01 ms | 11.01 ms |
+| 64 | 11.19 ms | 11.09 ms |
+| 256 | 11.56 ms | 11.00 ms |
 
-Full attention grows with T (1.03x from T=16 to T=256); the delta state is flat. At these sizes the feed-forward matrices dominate and hide most of the attention cost, which is itself the finding: **for a model this small, attention is not the bottleneck until the context is long.** The crossover is where the attention term overtakes the fixed weight cost, and it moves with d_ff/d.
+Full attention grows with T (1.05x from T=16 to T=256); the delta state is flat. At these sizes the feed-forward matrices dominate and hide most of the attention cost, which is itself the finding: **for a model this small, attention is not the bottleneck until the context is long.** The crossover is where the attention term overtakes the fixed weight cost, and it moves with d_ff/d.
 
-## 5. Self-tests
+## 5. The kernel choice: why int8, not ternary (M3)
 
-`ridge_mem_selftest`=0, `ridge_state_selftest`=0, `ridge_layer_selftest`=0 (0 = pass).
+Same layer, d=1024, 8 heads, d_ff=2816, run twice: once with the float GEMV and once with the int8 VNNI GEMV. Only the GEMV changes.
+
+| weights | bytes | ms/token | weight GB/s |
+|---|---:|---:|---:|
+| float32 | 51.4 | 11.17 | 4.60 |
+| int8 | 12.8 | 0.39 | 32.71 |
+
+**28.4x faster**, at a relative L2 error of 2.59% (single-scale activation quantisation; per-group scales would cut this). The float layer runs at 4.6 GB/s, below the read roof, because its GEMV is a scalar loop. The int8 layer reaches 32.7 GB/s, which is above the DRAM read roof -- the int8 weights fit in L3 at this size, so this is the compute-bound regime, not the memory-bound one.
+
+The kernel-level measurement (results/MEASUREMENTS.md) is the general result: **int8 VNNI processes a weight in 0.035 ns against ternary's 0.112 ns, 3.2x faster, while moving four times the bytes.** Fewer bits does not mean less time. Ternary is latency-bound on its serial masked-add chain; int8 VNNI has independent accumulator lanes and 64 multiply-accumulates per instruction. The engine therefore ships int8. The int8 path matches a scalar integer dot exactly (max abs error 0).
+
+## 6. Self-tests
+
+`ridge_mem_selftest`=0, `ridge_state_selftest`=0, `ridge_layer_selftest`=0, `ridge_quant_selftest`=0 (0 = pass).
 
 The Python suite checks the same maths against an independent NumPy reference: `tests/test_engine.py`.
 

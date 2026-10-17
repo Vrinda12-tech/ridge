@@ -29,6 +29,39 @@ static void matvec(float *y, const float *W, const float *x, int n_out, int n_in
   }
 }
 
+/* Pick the int8 kernel when the layer has been quantised, else the float loop.
+ * The signature is the same, so this is the one substitution M3 was written for. */
+static void gemv(float *y, const float *W, const ridge_qmat *q, const float *x,
+                 int n_out, int n_in) {
+  if (q && q->w) { ridge_gemv_i8(q, x, y); return; }
+  matvec(y, W, x, n_out, n_in);
+}
+
+int ridge_layer_quantize(ridge_layer *L) {
+  if (!L) return -1;
+  if (ridge_quantize(&L->q_wq, L->wq, L->d, L->d) != 0) return -1;
+  if (ridge_quantize(&L->q_wk, L->wk, L->d, L->d) != 0) return -1;
+  if (ridge_quantize(&L->q_wv, L->wv, L->d, L->d) != 0) return -1;
+  if (ridge_quantize(&L->q_wo, L->wo, L->d, L->d) != 0) return -1;
+  if (ridge_quantize(&L->q_gate, L->w_gate, L->d_ff, L->d) != 0) return -1;
+  if (ridge_quantize(&L->q_up, L->w_up, L->d_ff, L->d) != 0) return -1;
+  if (ridge_quantize(&L->q_down, L->w_down, L->d, L->d_ff) != 0) return -1;
+  L->quantized = 1;
+  return 0;
+}
+
+void ridge_layer_dequantize(ridge_layer *L) {
+  if (!L) return;
+  ridge_quant_free(&L->q_wq);
+  ridge_quant_free(&L->q_wk);
+  ridge_quant_free(&L->q_wv);
+  ridge_quant_free(&L->q_wo);
+  ridge_quant_free(&L->q_gate);
+  ridge_quant_free(&L->q_up);
+  ridge_quant_free(&L->q_down);
+  L->quantized = 0;
+}
+
 static void rmsnorm(float *out, const float *x, const float *w, int d, float eps) {
   float ss = 0.0f;
   for (int i = 0; i < d; i++) ss += x[i] * x[i];
@@ -81,9 +114,9 @@ int ridge_layer_fwd(const ridge_layer *L, float *x, float *kv, int *kv_len,
 
   /* --- attention block --- */
   rmsnorm(normed, x, L->attn_norm, d, 1e-5f);
-  matvec(q, L->wq, normed, d, d);
-  matvec(k, L->wk, normed, d, d);
-  matvec(v, L->wv, normed, d, d);
+  gemv(q, L->wq, &L->q_wq, normed, d, d);
+  gemv(k, L->wk, &L->q_wk, normed, d, d);
+  gemv(v, L->wv, &L->q_wv, normed, d, d);
   for (int h = 0; h < H; h++) {
     rope(q + h * dh, dh, pos, L->rope_theta);
     rope(k + h * dh, dh, pos, L->rope_theta);
@@ -138,15 +171,15 @@ int ridge_layer_fwd(const ridge_layer *L, float *x, float *kv, int *kv_len,
     }
   }
 
-  matvec(proj, L->wo, attn, d, d);
+  gemv(proj, L->wo, &L->q_wo, attn, d, d);
   for (int i = 0; i < d; i++) x[i] += proj[i];
 
   /* --- feed-forward block --- */
   rmsnorm(normed, x, L->ffn_norm, d, 1e-5f);
-  matvec(gate, L->w_gate, normed, dff, d);
-  matvec(up, L->w_up, normed, dff, d);
+  gemv(gate, L->w_gate, &L->q_gate, normed, dff, d);
+  gemv(up, L->w_up, &L->q_up, normed, dff, d);
   silu_mul(gate, gate, up, dff);
-  matvec(ffnout, L->w_down, gate, d, dff);
+  gemv(ffnout, L->w_down, &L->q_down, gate, d, dff);
   for (int i = 0; i < d; i++) x[i] += ffnout[i];
 
   free(buf);
@@ -166,7 +199,8 @@ int ridge_layer_selftest(void) {
   for (int i = 0; i < d * dff; i++) wd[i] = 0.01f * (i % 3 - 1);
   for (int i = 0; i < d; i++) { an[i] = 1.0f; fn[i] = 1.0f; }
 
-  ridge_layer L = {d, H, dh, dff, wq, wk, wv, wo, wg, wu, wd, an, fn, 10000.0f};
+  ridge_layer L = {d, H, dh, dff, wq, wk, wv, wo, wg, wu, wd, an, fn, 10000.0f,
+                   {0}, {0}, {0}, {0}, {0}, {0}, {0}, 0};
 
   float x[d] = {1.0f, -0.5f, 0.25f, 0.75f};
   float kv[4 * 2 * d];
@@ -190,6 +224,22 @@ int ridge_layer_selftest(void) {
   float nz = 0.0f;
   for (int i = 0; i < H * dh * dh; i++) nz += fabsf(st[i]);
   if (nz <= 0.0f) return 9;   /* the state must have been written */
+
+  /* the int8 path must run and stay close to the float path */
+  ridge_layer Lq = L;
+  if (ridge_layer_quantize(&Lq) != 0) return 10;
+  float xa[d] = {1.0f, -0.5f, 0.25f, 0.75f};
+  float xb[d];
+  memcpy(xb, xa, sizeof(xb));
+  int kva = 0, kvb = 0;
+  float kva_buf[4 * 2 * d], kvb_buf[4 * 2 * d];
+  if (ridge_layer_fwd(&L, xa, kva_buf, &kva, 4, NULL, 0, 0) != 0) return 11;
+  if (ridge_layer_fwd(&Lq, xb, kvb_buf, &kvb, 4, NULL, 0, 0) != 0) return 12;
+  for (int i = 0; i < d; i++) {
+    float denom = fabsf(xa[i]) > 1e-3f ? fabsf(xa[i]) : 1.0f;
+    if (fabsf(xb[i] - xa[i]) / denom > 0.15f) return 13;  /* int8 has ~1% error */
+  }
+  ridge_layer_dequantize(&Lq);
 
   return 0;
 }

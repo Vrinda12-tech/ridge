@@ -207,7 +207,7 @@ Each is independently testable; each ends with a measured number, not a claim.
 | M0 | `docs/ENGINE.md` (this file) | the plan is written and reviewable | done |
 | M1 | memory manager | page/block allocator + spill; unit-tested for correctness and leak-free | done |
 | M2 | state engine | delta-rule and KV attention match a NumPy reference to 1e-4 | done |
-| M3 | kernels | q4/q2 GEMV beats the current 18 GFLOP/s; measured | next |
+| M3 | kernels | q4/q2 GEMV beats the current 18 GFLOP/s; measured | done (int8, 57 GFLOP/s) |
 | M4 | layer forward | one full transformer layer runs in C, matches NumPy to 1e-3 | done |
 | M5 | end-to-end tiny model | a real (small) model generates tokens; tok/s and peak RSS measured | next |
 | M6 | policy tuning | the cache model in §3.1c is validated against measured miss rates | done (model corrected) |
@@ -299,9 +299,12 @@ with `beta=1`, `g=0` and orthonormal keys it stores and returns `v` exactly.
 
 M1–M4 are built and measured. What remains:
 
-- **M3 (kernels)**: wire the bit-sliced ternary and int8 GEMV into the layer's
-  matrix-vector products. The layer is written so this is a substitution behind
-  `matvec`, not a rewrite. This is where the 7.2x decode gap gets attacked.
+- **M3 (kernels)**: **done.** The int8 VNNI GEMV is wired into the layer behind
+  `gemv`. Measured 57.4 GFLOP/s DRAM-bound against the ternary kernel's 17.9, and
+  28.4x faster than the float layer end to end, at 2.59% relative L2 error. The
+  surprise is that int8 beats 2-bit ternary per weight (0.035 ns against 0.112 ns)
+  because decode is latency-bound, not bandwidth-bound; the derivation is §9 of
+  `docs/MATH.md`. The layer's `matvec` is still there as the float reference.
 - **M5 (runner)**: a tokenizer, an embedding table, a stack of these layers, and a
   sampler. This is the first piece that needs real weights on disk, and it is the
   largest remaining chunk of code.

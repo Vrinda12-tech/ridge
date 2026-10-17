@@ -36,6 +36,7 @@ before you assume otherwise.
 | `ridge_mem.c` | logical-block memory manager: one `mmap` pool, a block table, a free list, a spill file |
 | `ridge_state.c` | full softmax attention, and the gated delta rule with a constant state |
 | `ridge_layer.c` | one pre-norm transformer layer: RMSNorm, RoPE, both attention paths, SwiGLU |
+| `ridge_quant.c` | int8 quantisation and the AVX-512 VNNI GEMV the layer uses |
 | `engine_core.py` | the ctypes binding; builds the shared object itself |
 
 **`kernel/ridge_kernels.c`** measures the machine: read bandwidth, copy bandwidth,
@@ -167,11 +168,14 @@ that is 0.177 GB/s direct, 16.1 GB/s buffered (`results/machine.json`). At devic
 speed, spilling is a 100x slowdown, so the pool must genuinely hold the working
 set for spilling to be worth it at all.
 
-**The layer's matrix-vector products are naive.** `matvec` in `ridge_layer.c` is a
-plain loop: no blocking, no SIMD, single-threaded, float32. It is a correct
-reference, not a fast kernel. The measured ternary GEMV (17.96 GFLOP/s) and the
-int8 path are not wired in yet — that is M3, and it is where the decode gap gets
-attacked.
+**The layer's float path is naive, and the int8 path is the real one.** The layer
+ships two GEMVs: `matvec` (a plain scalar float loop, the reference) and the int8
+VNNI kernel in `ridge_quant.c`, which the layer uses after `quantize()`. Measured,
+the int8 path is 28.4x faster than the float layer end to end. The int8 kernel is
+correct and fast but not yet multi-threaded, and it re-quantises the activation
+vector on every GEMV rather than once per layer — a known small waste. The ternary
+kernel stays in `kernel/ridge_kernels.c` as a measurement only: it is 3.2x slower
+per weight than int8, for the reason derived in `docs/MATH.md` §9.
 
 **The layer is not a real model layer yet.** The delta path hard-codes `beta=1`
 and `g=0`; there are no learned gates from weights. Attention uses the same head
@@ -181,8 +185,9 @@ is right, the plumbing is not there.
 **No tokenizer, no runner, no sampler.** You cannot give it text and get text.
 M5.
 
-**Float32 only.** The engine does not read quantized weights. The quant story
-exists only in the cost model and in the standalone GEMV.
+**Float32 activations, int8 weights only.** The layer's weights can be quantised
+to int8 (`Layer.quantize()`); the activations, state, and KV cache are float32.
+The engine does not read GGUF or any packed quant format.
 
 **`-march=native` means the committed build does not exist** — the `.so` is
 gitignored and built locally. Cross-machine use requires a rebuild, and the
@@ -198,10 +203,12 @@ compiler, but the full suite does not.
 
 ## How to extend it
 
-**Add a kernel (M3).** `ridge_layer.c` calls `matvec(y, W, x, n_out, n_in)` in
-three places. Replace the body with your kernel, keeping the signature. The maths
-does not change; only the speed does. Check against the NumPy reference in
-`tests/test_engine.py::test_layer_full_attention_matches_reference` at 1e-4.
+**Add a kernel.** `ridge_layer.c` calls `gemv` (which dispatches to
+`ridge_gemv_i8` in `ridge_quant.c` or the float `matvec`) in seven places. Replace
+the int8 body with your kernel, keeping the signature. The maths does not change;
+only the speed does. Check against the NumPy reference in
+`tests/test_engine.py::test_layer_full_attention_matches_reference` at 1e-4 and
+`test_quantized_layer_tracks_float_layer` for the int8 error bound.
 
 **Add a pool policy.** `choose_victim` in `ridge_mem.c` returns the block to
 evict. It is currently LRU by a monotonic counter. A scan-resistant policy
@@ -226,7 +233,8 @@ number from the code, and add a test that checks the code against the derivation
 
 ## Status of the milestones
 
-From `docs/ENGINE.md`: M0 (plan), M1 (memory manager), M2 (state engine), M4
-(layer forward), M6 (policy model, corrected) are **done**. M3 (kernels) and M5
-(runner) are **next**. The engine can run one layer on arrays; it cannot run a
-model. That is the gap a new contributor should close first.
+From `docs/ENGINE.md`: M0 (plan), M1 (memory manager), M2 (state engine), M3
+(kernels, int8 wired in), M4 (layer forward), M6 (policy model, corrected) are
+**done**. M5 (runner) is **next**: a tokenizer, an embedding table, a layer stack,
+and a sampler. The engine can run one layer on arrays and quantise it to int8; it
+cannot run a model. That is the gap a new contributor should close first.

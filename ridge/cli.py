@@ -27,7 +27,7 @@ def load_machine(ram_gb: float) -> Machine:
         r = json.loads(RESULTS.read_text())
         k = r["kernel"]
         return Machine(read_gbs=k["roof_read_gbs"], copy_gbs=k["roof_copy_gbs"],
-                       fma_gflops=k["roof_fma_gflops"], compute_gflops=k["ternary_gflops"],
+                       fma_gflops=k["roof_fma_gflops"], compute_gflops=k.get("int8_dram_gflops", k["ternary_gflops"]),
                        disk_direct_gbs=k["disk_direct_gbs"], disk_buffered_gbs=k["disk_buffered_gbs"],
                        ram_bytes=ram_gb * 1e9)
     return Machine(ram_bytes=ram_gb * 1e9)

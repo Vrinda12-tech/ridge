@@ -17,7 +17,7 @@ class Machine:
     read_gbs: float = 35.4
     copy_gbs: float = 21.2
     fma_gflops: float = 108.7          # peak fp32 FMA rate, the compute roof of Section 1
-    compute_gflops: float = 18.0       # achieved rate of the quantised (bit-sliced) mat-vec
+    compute_gflops: float = 57.4       # achieved int8 VNNI mat-vec rate (ternary is 17.9)
     disk_direct_gbs: float = 0.177
     disk_buffered_gbs: float = 15.4
     ram_bytes: float = 8e9
