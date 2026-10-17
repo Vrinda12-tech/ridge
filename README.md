@@ -107,6 +107,40 @@ run, how fast, and which of your assumptions is wrong. Every claim has a test or
 measured number behind it, and `results/MEASUREMENTS.md` is regenerated from the
 measurement so the two cannot drift apart.
 
+## The engine
+
+`engine/` is the second half: not the arithmetic but the thing that runs. Plain C,
+no dependencies, built by `gcc` through a ctypes binding.
+
+- `engine/ridge_mem.c` — a logical-block memory manager. One `mmap`'d pool, a
+  block table, a free list, and a spill file. Logical blocks are stable handles
+  (KV blocks, weight slabs); physical slots are the RAM window. `touch` guarantees
+  residency, spilling and recalling as needed. This is paged attention's block
+  table, and the same shape as MNN's CPU KV manager.
+- `engine/ridge_state.c` — the two attention state forms: full softmax attention,
+  and the gated delta rule with a constant `[H, d_k, d_v]` state.
+- `engine/ridge_layer.c` — one pre-norm transformer layer, in C, using both.
+
+```bash
+python bench/engine_bench.py     # measure: state, spill, policy, throughput
+python bench/engine_report.py    # -> results/ENGINE_MEASUREMENTS.md
+python -m pytest tests/test_engine.py
+```
+
+Measured, not claimed (`results/ENGINE_MEASUREMENTS.md`):
+
+| | value |
+|---|---|
+| delta state, 27 layers x 32 heads x 128 dim | **56.6 MB, flat in T** |
+| KV cache at 32k context, same geometry | **14,496 MB (256x)** |
+| spill fill / recall, 1 MiB blocks | 294 / 1,895 MB/s |
+| one decode layer, d=1024, d_ff=2816 | ~11.1 ms |
+
+The plan predicted a pool miss rate of `1 - P/W`; the measurement is **1.000 for
+every pool smaller than the working set**, because a decode pass is cyclic and
+cyclic is the worst case for LRU. The model was corrected to
+`miss = 0 if P >= W else 1`. That correction is in `docs/ENGINE.md` §3.1c.
+
 ## Lineage
 
 The engineering patterns are taken from a set of repositories the brief pointed

@@ -4,10 +4,13 @@ Repository memory for `ridge`. Read this before changing anything.
 
 ## What this repository is
 
-The arithmetic and measurements behind running a coding model on 8 GB of RAM with
-no CUDA. It does **not** download or run language models. It sizes them, predicts
-throughput, and measures the machine. If a change would require downloading
-weights to test, it is out of scope for a normal run.
+The arithmetic, the measurements, and a C engine core for running a coding model
+on 8 GB of RAM with no CUDA. `ridge/` + `kernel/` size models, predict throughput,
+and measure the machine. `engine/` is the actual runtime core: a block memory
+manager, the attention state (full and constant), and one transformer layer in C.
+It does **not** download weights, and it does not yet have a tokenizer or a runner
+(M5 in `docs/ENGINE.md`). If a change would require downloading weights to test,
+it is out of scope for a normal run.
 
 ## The one rule
 
@@ -28,8 +31,15 @@ ridge/jepa.py         hankel/dmd/participation_ratio, train_latent() and the col
 ridge/state.py        kalman(), Reservoir, state/kv memory.
 ridge/router.py       Foreman: tier + gamma from measured alpha and c.
 ridge/cli.py          command line.
+ridge/engine_core.py  ctypes binding + build for engine/. NumPy arrays in as pointers.
+engine/ridge_mem.{h,c}    logical-block memory manager: mmap pool, block table, spill.
+engine/ridge_state.{h,c}  full attention + gated delta rule (constant state).
+engine/ridge_layer.{h,c}  one pre-norm transformer layer in C.
+docs/ENGINE.md            the engine plan: inputs/outputs, design, milestones, results.
 bench/run.py              measure -> results/machine.json (the source of truth).
 bench/report.py           results/machine.json -> results/MEASUREMENTS.md.
+bench/engine_bench.py     measure the engine -> results/engine.json.
+bench/engine_report.py    results/engine.json -> results/ENGINE_MEASUREMENTS.md.
 tools/hf_probe.py         HuggingFace hub metadata probe (cached to results/hf_models.json).
 tests/                    pytest. The maths is checked against simulation, not mocks.
 ```
@@ -40,12 +50,29 @@ tests/                    pytest. The maths is checked against simulation, not m
 pip install --user numpy pytest
 python bench/run.py            # needs network for the hub probe; --no-net uses the cache
 python bench/report.py
+python bench/engine_bench.py   # builds engine/librridge_engine.so itself
+python bench/engine_report.py
 python -m pytest tests/ -q
 python -m ridge.cli {size,throughput,route,spec,state}
 gcc -O3 -march=native -o bench/ridge_kernels kernel/ridge_kernels.c -lm -lpthread
 ```
 
 `bench/run.py` builds the kernel itself if the source is newer than the binary.
+`ridge/engine_core.py` builds `engine/librridge_engine.so` the same way, and the
+engine tests build it on first import.
+
+## The engine's invariants
+
+Three things are true by construction and are checked by self-tests; do not break
+them:
+
+1. `ridge_mem_touch` never returns a pointer to non-resident bytes.
+2. A dirty block is written to the spill file before it is dropped.
+3. Resident bytes never exceed the pool, at any moment.
+
+A logical block is a stable handle; a physical slot is a RAM window. They are
+different types of thing and must not be conflated — that mistake was made once
+(ids recycled across slots) and the self-test caught it.
 
 ## Two traps that will waste your time
 

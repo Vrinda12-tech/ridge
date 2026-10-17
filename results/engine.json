@@ -1,0 +1,106 @@
+{
+  "machine": {
+    "block_pool_note": "measured on this host"
+  },
+  "state_memory": {
+    "n_layer": 27,
+    "n_head": 32,
+    "head_dim": 128,
+    "kv_bytes_per_token": 442368,
+    "delta_state_bytes": 56623104,
+    "kv_bytes_at_1024": 452984832,
+    "ratio_kv_over_delta_at_1024": 8.0,
+    "kv_bytes_at_4096": 1811939328,
+    "ratio_kv_over_delta_at_4096": 32.0,
+    "kv_bytes_at_8192": 3623878656,
+    "ratio_kv_over_delta_at_8192": 64.0,
+    "kv_bytes_at_32768": 14495514624,
+    "ratio_kv_over_delta_at_32768": 256.0,
+    "kv_bytes_at_131072": 57982058496,
+    "ratio_kv_over_delta_at_131072": 1024.0
+  },
+  "spill": {
+    "block_bytes": 1048576,
+    "pool_bytes": 67108864,
+    "logical_blocks": 4096,
+    "fill_seconds": 14.59210093999718,
+    "recall_seconds": 2.266390180997405,
+    "spill_write_mbs": 294.3350867473392,
+    "recall_read_mbs": 1895.0696715910797
+  },
+  "pool_policy": {
+    "working_set_blocks": 256,
+    "passes": 8,
+    "access_order": "cyclic",
+    "points": [
+      {
+        "pool_blocks": 16,
+        "measured_miss_rate": 1.0,
+        "predicted_random_model": 0.9375,
+        "predicted_cyclic_model": 1.0
+      },
+      {
+        "pool_blocks": 32,
+        "measured_miss_rate": 1.0,
+        "predicted_random_model": 0.875,
+        "predicted_cyclic_model": 1.0
+      },
+      {
+        "pool_blocks": 64,
+        "measured_miss_rate": 1.0,
+        "predicted_random_model": 0.75,
+        "predicted_cyclic_model": 1.0
+      },
+      {
+        "pool_blocks": 128,
+        "measured_miss_rate": 1.0,
+        "predicted_random_model": 0.5,
+        "predicted_cyclic_model": 1.0
+      },
+      {
+        "pool_blocks": 256,
+        "measured_miss_rate": 0.0,
+        "predicted_random_model": 0.0,
+        "predicted_cyclic_model": 0.0
+      }
+    ]
+  },
+  "layer": {
+    "d": 1024,
+    "n_heads": 8,
+    "d_ff": 2816,
+    "full_attention": [
+      {
+        "T": 16,
+        "seconds_per_token": 0.011106561300039175
+      },
+      {
+        "T": 64,
+        "seconds_per_token": 0.011146748250030213
+      },
+      {
+        "T": 256,
+        "seconds_per_token": 0.011434127250140591
+      }
+    ],
+    "delta_state": [
+      {
+        "T": 16,
+        "seconds_per_token": 0.011082252300002437
+      },
+      {
+        "T": 64,
+        "seconds_per_token": 0.011086022249946837
+      },
+      {
+        "T": 256,
+        "seconds_per_token": 0.011079625750062405
+      }
+    ]
+  },
+  "c_selftests": {
+    "mem": 0,
+    "state": 0,
+    "layer": 0
+  }
+}
