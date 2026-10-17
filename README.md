@@ -83,6 +83,9 @@ python -m ridge.cli route --alpha 0.9
 hard-coded to a machine. `tools/hf_probe.py` pulls real model geometry from the
 HuggingFace hub so the sizing is against actual configs, not guesses.
 
+New here? Read **`docs/DEVELOPERS.md`** — what it does, what it does not, how to
+build and test it, and an honest list of where it fails and why.
+
 ## The kernels
 
 `kernel/ridge_kernels.c` is one file, no dependencies, and it measures the
